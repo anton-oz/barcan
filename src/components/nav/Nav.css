@@ -1,0 +1,10 @@
+:root {
+  --bg: #313244;
+}
+
+nav {
+  /* background: linear-gradient(to bottom, var(--bg), #1e1e2e 60%); */
+  background: var(--bg);
+  padding: 1.25em;
+  padding-bottom: 1.5em;
+}
