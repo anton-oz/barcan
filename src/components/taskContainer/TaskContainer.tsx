@@ -2,9 +2,15 @@ import "./TaskContainer.css";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
+import Task from "../task/Task";
+
 interface Task {
   title: string;
   content: string;
+}
+
+interface TaskContainerProps {
+  title: "Todo" | "In Progress" | "Done";
 }
 
 /**
@@ -12,7 +18,7 @@ interface Task {
  * add custom scrollbar component for scrollable content
  */
 
-export default function TaskContainer({ title }: { title: string }) {
+export default function TaskContainer({ title }: TaskContainerProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   const addTask = () => {
@@ -35,10 +41,7 @@ export default function TaskContainer({ title }: { title: string }) {
       <article>
         <ul>
           {tasks.map((task, i) => (
-            <li key={i} className="task">
-              <h3 contentEditable>{task.title}</h3>
-              <p contentEditable>{task.content}</p>
-            </li>
+            <Task key={i} title={task.title} content={task.content} />
           ))}
         </ul>
       </article>
