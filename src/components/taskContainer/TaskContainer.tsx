@@ -1,5 +1,5 @@
 import "./TaskContainer.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 
 import Task from "../task/Task";
@@ -28,6 +28,59 @@ export default function TaskContainer({ title }: TaskContainerProps) {
     ]);
   };
 
+  const dragEventListeners = () => {
+    const articleEl = document.getElementById(title);
+    if (!articleEl) {
+      throw new Error(
+        "Error: articleEl is undefined in TaskContainer component",
+      );
+    }
+
+    const handleDragover = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // console.log(`${title} dragged over`);
+      articleEl.style.border = "2px solid var(--text)";
+    };
+
+    const handleDragLeave = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      articleEl.style.border = "none";
+    };
+
+    const handleDrop = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!e.dataTransfer) {
+        throw new Error(
+          "Error: could not access data transfer event TaskContainer",
+        );
+      }
+      const data = e.dataTransfer.getData("text");
+      const task = document.getElementById(data);
+      if (!task) {
+        throw new Error("Error: task is null could not complete drop");
+      }
+      articleEl.appendChild(task);
+      articleEl.style.border = "none";
+    };
+
+    articleEl.addEventListener("dragover", handleDragover);
+
+    articleEl.addEventListener("dragleave", handleDragLeave);
+
+    articleEl.addEventListener("drop", handleDrop);
+
+    return () => {
+      articleEl.removeEventListener("dragover", handleDragover);
+      articleEl.removeEventListener("dragleave", handleDragLeave);
+      articleEl.removeEventListener("drop", handleDrop);
+    };
+  };
+
+  useEffect(dragEventListeners);
+
   return (
     <section>
       <header>
@@ -38,10 +91,15 @@ export default function TaskContainer({ title }: TaskContainerProps) {
           </button>
         ) : null}
       </header>
-      <article>
+      <article id={title}>
         <ul>
           {tasks.map((task, i) => (
-            <Task key={i} title={task.title} content={task.content} />
+            <Task
+              key={i}
+              id={`task-${i}`}
+              title={task.title}
+              content={task.content}
+            />
           ))}
         </ul>
       </article>
