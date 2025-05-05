@@ -36,11 +36,17 @@ export default function TaskContainer({ title }: TaskContainerProps) {
       );
     }
 
+    let lastTime = 0;
+    const throttleTime = 250;
+
     const handleDragover = (e: DragEvent) => {
+      const now = Date.now();
       e.preventDefault();
       e.stopPropagation();
-      // console.log(`${title} dragged over`);
-      articleEl.style.border = "2px solid var(--text)";
+      if (now - lastTime >= throttleTime) {
+        lastTime = now;
+        articleEl.style.border = "2px solid var(--text)";
+      }
     };
 
     const handleDragLeave = (e: DragEvent) => {
