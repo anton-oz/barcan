@@ -1,0 +1,14 @@
+main {
+  display: flex;
+}
+
+section {
+  width: 33%;
+  height: 100%;
+  padding: 1em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}

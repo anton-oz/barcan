@@ -1,23 +1,69 @@
 :root {
+  /* Default values */
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #1e1e2e;
+  color: #cdd6f4;
+  background-color: var(--mantel);
+
+  box-sizing: border-box;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /**
+  *  Color Scheme
+  */
+  /* TODO: add these to plate for default color scheme */
+
+  --crust: #11111b;
+  --mantel: #181825;
+  --base: #1e1e2e;
+
+  --surface-0: #313244;
+  --surface-1: #45475a;
+  --surface-2: #585b70;
+
+  --overlay-0: #6c7086;
+  --overlay-1: #7f849c;
+  --overlay-2: #9399b2;
+
+  --subtext-0: #a6adc8;
+  --subtext-1: #bac2de;
+  --text: #cdd6f4;
+
+  --lavender: #b4befe;
+  --blue: #89b4fa;
+  --sapphire: #74c7ec;
+  --sky: #89dceb;
+  --teal: #94e2d5;
+  --green: #a6e3a1;
+  --yellow: #f9e2af;
+  --peach: #fab387;
+  --maroon: #eba0ac;
+  --red: #f38ba8;
+  --mauve: #cba6f7;
+  --pink: #f5c2e7;
+  --flamingo: #f2cdcd;
+  --rosewater: #f5e0dc;
+
+  /* Other */
+  --border-radius: 0.3em;
 }
 
 html {
-  font-size: var(font-family);
-  background-color: var(background-color);
+  height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  max-width: 100vw;
 }
 
 h1 {
-  font-size: 25px;
+  font-size: 1.5em;
 }
