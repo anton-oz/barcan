@@ -1,13 +1,13 @@
 main {
   display: flex;
+  flex: auto;
 }
 
 section {
-  width: 33%;
-  height: 100%;
   padding: 1em;
 
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: start;
   align-items: center;

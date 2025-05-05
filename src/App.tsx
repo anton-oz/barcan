@@ -1,15 +1,15 @@
 import "./App.css";
 import Nav from "./components/nav/Nav";
-import Todo from "./components/todo/Todo";
+import TaskContainer from "./components/taskContainer/TaskContainer";
 
 function App() {
   return (
     <>
       <Nav />
       <main>
-        <Todo />
-        <section>In progress</section>
-        <section>Done</section>
+        <TaskContainer title="Todo" />
+        <TaskContainer title="In Progress" />
+        <TaskContainer title="Done" />
       </main>
     </>
   );
