@@ -1,5 +1,5 @@
+import { useState, useEffect } from "react";
 import "./Task.css";
-import { useEffect } from "react";
 
 interface TaskProps {
   id: string;
@@ -8,6 +8,8 @@ interface TaskProps {
 }
 
 export default function Task({ id, title, content }: TaskProps) {
+  const [taskTitle, setTaskTitle] = useState(title);
+  const [taskContent, setTaskContent] = useState(content);
   const dragEventListeners = () => {
     const taskEl = document.getElementById(id);
     if (!taskEl) {
@@ -44,21 +46,55 @@ export default function Task({ id, title, content }: TaskProps) {
       taskEl.removeEventListener("dragend", handleDragEnd);
     };
   };
+
   useEffect(dragEventListeners);
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { target } = event;
+    const name = target.name;
+    const value = target.value;
+    switch (name) {
+      case "title":
+        // TODO:
+        // add visual indicator to page when too long, like a red border
+        if (value.length === 48) {
+          console.error("too long");
+          return;
+        }
+        setTaskTitle(value);
+        break;
+      case "content":
+        setTaskContent(value);
+        break;
+      default:
+        console.error("Error: Could not update task change event");
+        return;
+    }
+  };
+
+  const autoResizeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.style.height = Math.min(e.target.scrollHeight, 130) + "px";
+  };
 
   return (
     <li id={id} draggable className="task">
-      {/*
-      HACK:
-      this method of editing content is error prone,
-      fix at some point lol
-      */}
-      <h3 contentEditable suppressContentEditableWarning>
-        {title}
-      </h3>
-      <p contentEditable suppressContentEditableWarning>
-        {content}
-      </p>
+      <textarea
+        id="title"
+        role="task title"
+        name="title"
+        value={taskTitle}
+        onChange={handleChange}
+        autoFocus
+        rows={1}
+      />
+      <textarea
+        id="content"
+        role="task content"
+        name="content"
+        value={taskContent}
+        onChange={handleChange}
+        onInput={autoResizeContent}
+      />
     </li>
   );
 }

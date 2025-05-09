@@ -10,8 +10,6 @@
   color: #cdd6f4;
   background-color: var(--mantel);
 
-  box-sizing: border-box;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -55,6 +53,12 @@
 
   /* Other */
   --border-radius: 0.3em;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
 }
 
 * {

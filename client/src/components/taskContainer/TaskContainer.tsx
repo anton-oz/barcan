@@ -1,8 +1,7 @@
-import "./TaskContainer.css";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-
 import Task from "../task/Task";
+import "./TaskContainer.css";
 
 interface Task {
   title: string;
@@ -97,8 +96,8 @@ export default function TaskContainer({ title }: TaskContainerProps) {
           </button>
         ) : null}
       </header>
-      <article id={title}>
-        <ul>
+      <article>
+        <ul id={title}>
           {tasks.map((task, i) => (
             <Task
               key={i}
