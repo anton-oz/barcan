@@ -1,0 +1,19 @@
+{
+  "name": "barcan",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "pnpm i && concurrently \" cd client && pnpm i\" \" cd server && pnpm i\"",
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:client\"",
+    "dev:server": "cd server && pnpm dev",
+    "dev:client": "cd client && pnpm dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.8.1",
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
