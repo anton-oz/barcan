@@ -21,7 +21,7 @@ export default function Task({ id, title, content }: TaskProps) {
       e.stopPropagation();
 
       if (!e.dataTransfer) {
-        throw new Error("Erro: dataTransfer event is null.");
+        throw new Error("Error: dataTransfer event is null.");
       }
 
       e.dataTransfer.effectAllowed = "move";
