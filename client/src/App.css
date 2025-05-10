@@ -12,3 +12,41 @@ section {
   justify-content: start;
   align-items: center;
 }
+
+#error {
+  width: 13%;
+  margin: 0.5em;
+  padding: 1em;
+
+  background: var(--surface-0);
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  border: 2px solid var(--red);
+  border-radius: var(--border-radius);
+}
+
+#error > h2 {
+  color: var(--red);
+
+  font-size: 3em;
+  font-weight: bold;
+}
+
+#error > button {
+  padding: 0.25em 0.5em;
+
+  font-size: 1.25em;
+
+  cursor: pointer;
+
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+#error > button:hover {
+  color: black;
+  background: white;
+}

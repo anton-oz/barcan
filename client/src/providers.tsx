@@ -11,6 +11,7 @@ export const useTaskContext = () => useContext(TaskContext);
 
 export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [retry, setRetry] = useState(false);
 
   const fetchTasks = async () => {
     try {
@@ -19,6 +20,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
       return data;
     } catch (error) {
       console.error("Error: ", error);
+      return null;
     }
   };
 
@@ -26,6 +28,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     try {
       const tasks = await fetchTasks();
       setTasks(tasks);
+      setRetry(false);
     } catch (error) {
       console.error("Could not fetch tasks: ", error);
     }
@@ -33,8 +36,8 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     handleSetTasks();
-  }, []);
+  }, [retry]);
   // NOTE: PLACEHOLDER
-  const value = tasks;
+  const value = { tasks, setTasks, retry, setRetry };
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
 }

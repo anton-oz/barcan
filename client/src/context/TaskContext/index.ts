@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, Dispatch } from "react";
 
 export interface Task {
   id: number;
@@ -7,6 +7,18 @@ export interface Task {
   status: string;
 }
 
-const taskContext: Task[] = [];
+interface TaskContextDataType {
+  tasks: Task[];
+  setTasks: Dispatch<Task[]>;
+  retry: boolean;
+  setRetry: Dispatch<boolean>;
+}
 
-export const TaskContext = createContext<Task[]>(taskContext);
+const taskContextData = {
+  tasks: [],
+  setTasks: () => {},
+  retry: false,
+  setRetry: () => {},
+};
+
+export const TaskContext = createContext<TaskContextDataType>(taskContextData);

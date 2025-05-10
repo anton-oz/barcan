@@ -28,6 +28,7 @@ app.post("/tasks", async (req: Request, res: Response) => {
 
 app.get("/tasks", async (req: Request, res: Response) => {
   const tasks = await Task.findAll();
+  console.log("owhasdh");
   res.json(tasks);
 });
 

@@ -12,11 +12,21 @@ export interface TaskData {
 }
 
 function App() {
-  const tasks = useTaskContext();
+  const { tasks, setRetry } = useTaskContext();
+
+  const handleRetry = () => {
+    setRetry(true);
+  };
 
   return (
     <>
       <Nav />
+      {tasks === null ? (
+        <div id="error">
+          <h2>Error</h2>
+          <button onClick={handleRetry}>Retry</button>
+        </div>
+      ) : null}
       <main>
         <TaskContainer
           title="Todo"
