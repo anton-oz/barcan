@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 import "./reset.css";
 import "./index.css";
 import App from "./App.tsx";
+import { TaskProvider } from "./providers.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <TaskProvider>
+      <App />
+    </TaskProvider>
   </StrictMode>,
 );

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "pnpm tsc",
-    "dev": "pnpm tsx watch --env-file .env src/index.ts"
+    "dev": "pnpm tsx watch --env-file=.env src/index.ts",
+    "seed": "pnpm tsx --env-file=.env ./src/db/seed/seed.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import sequelize from "../connection";
+import sequelize from "../../connection";
 
 class Task extends Model {}
 
@@ -13,12 +13,15 @@ Task.init(
     },
     title: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
     content: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
-    column: {
+    status: {
       type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

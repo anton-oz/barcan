@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Plus } from "lucide-react";
 import Task from "../task/Task";
+import { TaskData } from "../../App";
 import "./TaskContainer.css";
-
-interface Task {
-  title: string;
-  content: string;
-}
 
 interface TaskContainerProps {
   title: "Todo" | "In Progress" | "Done";
+  tasks: TaskData[];
 }
 
 /**
@@ -17,16 +14,15 @@ interface TaskContainerProps {
  * add custom scrollbar component for scrollable content
  */
 
-export default function TaskContainer({ title }: TaskContainerProps) {
-  const [tasks, setTasks] = useState<Task[]>([]);
+/**
+ * TODO:
+ * move tasks fetching to context
+ */
 
-  const addTask = () => {
-    setTasks((prevState) => [
-      ...prevState,
-      { title: "Title", content: "content" },
-    ]);
+export default function TaskContainer({ title, tasks }: TaskContainerProps) {
+  const addTask = async () => {
+    console.log("under construction");
   };
-
   const dragEventListeners = () => {
     const articleEl = document.getElementById(title);
     if (!articleEl) {
@@ -91,9 +87,10 @@ export default function TaskContainer({ title }: TaskContainerProps) {
       <header>
         <h2>{title}</h2>
         {title === "Todo" ? (
-          <button onClick={addTask}>
-            <Plus size={30} />
-          </button>
+          // TODO:
+          // - set this to its own component
+          // - have this button toggle focus on newly created task
+          <Plus id="todoButton" role="button" size={30} onClick={addTask} />
         ) : null}
       </header>
       <article>

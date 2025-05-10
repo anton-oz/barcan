@@ -84,7 +84,6 @@ export default function Task({ id, title, content }: TaskProps) {
         name="title"
         value={taskTitle}
         onChange={handleChange}
-        autoFocus
         rows={1}
       />
       <textarea

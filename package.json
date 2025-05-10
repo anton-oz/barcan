@@ -7,7 +7,8 @@
     "install": "pnpm i && concurrently \" cd client && pnpm i\" \" cd server && pnpm i\"",
     "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:client\"",
     "dev:server": "cd server && pnpm dev",
-    "dev:client": "cd client && pnpm dev"
+    "dev:client": "cd client && pnpm dev",
+    "server:seed": "cd server && pnpm seed"
   },
   "keywords": [],
   "author": "",

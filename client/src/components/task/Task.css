@@ -23,7 +23,8 @@ textarea {
 
   background: none;
   resize: none;
-  border: 2px solid var(--surface-1);
+  /* border: 2px solid var(--surface-1); */
+  border: none;
   border-radius: var(--border-radius);
 }
 
