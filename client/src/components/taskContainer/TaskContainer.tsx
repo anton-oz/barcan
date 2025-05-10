@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Plus } from "lucide-react";
 import Task from "../task/Task";
-import { TaskData } from "../../App";
 import "./TaskContainer.css";
+import { useTaskContext } from "../../providers";
+import { Task as TaskData } from "../../context/TaskContext";
 
 interface TaskContainerProps {
-  title: "Todo" | "In Progress" | "Done";
-  tasks: TaskData[];
+  heading: "Todo" | "In Progress" | "Done";
+  filteredTasks: TaskData[];
 }
 
 /**
@@ -15,13 +16,29 @@ interface TaskContainerProps {
  */
 
 /**
- * TODO:
- * move tasks fetching to context
+ * BUG:
+ * dragging tasks into same container moves them
+ * to bottom of list instead of swapping with
+ * the task it got dropped on
  */
 
-export default function TaskContainer({ title, tasks }: TaskContainerProps) {
+export default function TaskContainer({
+  heading,
+  filteredTasks,
+}: TaskContainerProps) {
+  const { setTasks } = useTaskContext();
+
   const addTask = async () => {
     console.log("under construction");
+    setTasks((prevState) => [
+      ...prevState,
+      {
+        id: prevState.length + 1,
+        title: "",
+        content: "",
+        status: "Todo",
+      },
+    ]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {
@@ -32,7 +49,7 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
   };
 
   const dragEventListeners = () => {
-    const listEl = document.getElementById(title);
+    const listEl = document.getElementById(heading);
     if (!listEl) {
       throw new Error("Error: listEl is undefined in TaskContainer component");
     }
@@ -97,8 +114,8 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
   return (
     <section>
       <header>
-        <h2>{title}</h2>
-        {title === "Todo" ? (
+        <h2>{heading}</h2>
+        {heading === "Todo" ? (
           // TODO:
           // - set this to its own component
           // - have this button toggle focus on newly created task
@@ -114,10 +131,10 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
         ) : null}
       </header>
       <article>
-        <ul id={title}>
-          {tasks.map((task, i) => (
+        <ul id={heading}>
+          {[...filteredTasks].reverse().map((task, i) => (
             <Task
-              key={i}
+              key={task.id}
               id={`task-${i}`}
               title={task.title}
               content={task.content}
