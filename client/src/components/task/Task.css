@@ -28,7 +28,7 @@ textarea {
   border-radius: var(--border-radius);
 }
 
-#title {
+.title {
   color: var(--rosewater);
 
   font-size: 1.25em;
@@ -38,11 +38,11 @@ textarea {
   border-bottom: 1px solid var(--subtext-1);
 }
 
-#title:focus {
+.title:focus {
   border-radius: var(--border-radius);
 }
 
-#content {
+.content {
   height: 2em;
   min-height: 2em;
   max-height: 10em;

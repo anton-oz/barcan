@@ -26,10 +26,9 @@ export default function TaskContainer({
   heading,
   filteredTasks,
 }: TaskContainerProps) {
-  const { setTasks } = useTaskContext();
+  const { tasks, setTasks } = useTaskContext();
 
   const addTask = async () => {
-    console.log("under construction");
     setTasks((prevState) => [
       ...prevState,
       {
@@ -39,6 +38,7 @@ export default function TaskContainer({
         status: "Todo",
       },
     ]);
+    console.log(tasks);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Task.css";
 
 interface TaskProps {
@@ -11,6 +11,7 @@ interface TaskProps {
 export default function Task({ id, title, content, status }: TaskProps) {
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
+  const [isFocusable, setIsFocusable] = useState(false);
 
   const dragEventListeners = () => {
     const taskEl = document.getElementById(id);
@@ -51,6 +52,11 @@ export default function Task({ id, title, content, status }: TaskProps) {
 
   useEffect(dragEventListeners);
 
+  useEffect(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement.blur();
+  }, [isFocusable]);
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { target } = event;
     const name = target.name;
@@ -78,20 +84,62 @@ export default function Task({ id, title, content, status }: TaskProps) {
     e.target.style.height = Math.min(e.target.scrollHeight, 130) + "px";
   };
 
+  const titleRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const title = titleRef.current;
+    if (title) {
+      if (isFocusable) {
+        title.focus();
+        // start inserting at end of title
+        title.selectionStart = title.value.length;
+        return;
+      }
+      title.blur();
+    }
+  }, [isFocusable]);
+
   return (
-    <li id={id} data-status={status} draggable className="task">
+    <li
+      id={id}
+      onKeyDown={(e) => {
+        const editShortcut = e.ctrlKey && e.altKey && e.key === "e";
+        if (editShortcut) {
+          setIsFocusable(!isFocusable);
+        }
+        // const saveShortcut = e.ctrlKey && e.altKey && e.key === "s";
+        // if (isFocusable && saveShortcut) {
+        //   // TODO:
+        //   // save the task to the db here
+        //   setIsFocusable(false);
+        //   return;
+        // }
+      }}
+      style={{
+        outline: isFocusable ? "solid var(--blue)" : "",
+      }}
+      tabIndex={0}
+      data-status={status}
+      draggable
+      className="task"
+    >
       <textarea
-        id="title"
+        ref={titleRef}
+        tabIndex={isFocusable ? 0 : -1}
+        className="title"
         role="task title"
         name="title"
+        placeholder="Title"
         value={taskTitle}
         onChange={handleChange}
         rows={1}
       />
       <textarea
-        id="content"
+        tabIndex={isFocusable ? 0 : -1}
+        className="content"
         role="task content"
         name="content"
+        placeholder="Content"
         value={taskContent}
         onChange={handleChange}
         onInput={autoResizeContent}
