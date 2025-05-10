@@ -32,11 +32,9 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
   };
 
   const dragEventListeners = () => {
-    const articleEl = document.getElementById(title);
-    if (!articleEl) {
-      throw new Error(
-        "Error: articleEl is undefined in TaskContainer component",
-      );
+    const listEl = document.getElementById(title);
+    if (!listEl) {
+      throw new Error("Error: listEl is undefined in TaskContainer component");
     }
 
     let lastTime = 0;
@@ -48,14 +46,18 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
       e.stopPropagation();
       if (now - lastTime >= throttleTime) {
         lastTime = now;
-        articleEl.style.border = "2px solid var(--text)";
+        if (listEl.parentElement) {
+          listEl.parentElement.style.border = "2px solid var(--text)";
+        }
       }
     };
 
     const handleDragLeave = (e: DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      articleEl.style.border = "none";
+      if (listEl.parentElement) {
+        listEl.parentElement.style.border = "none";
+      }
     };
 
     const handleDrop = (e: DragEvent) => {
@@ -71,20 +73,22 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
       if (!task) {
         throw new Error("Error: task is null could not complete drop");
       }
-      articleEl.appendChild(task);
-      articleEl.style.border = "none";
+      listEl.appendChild(task);
+      if (listEl.parentElement) {
+        listEl.parentElement.style.border = "none";
+      }
     };
 
-    articleEl.addEventListener("dragover", handleDragover);
+    listEl.addEventListener("dragover", handleDragover);
 
-    articleEl.addEventListener("dragleave", handleDragLeave);
+    listEl.addEventListener("dragleave", handleDragLeave);
 
-    articleEl.addEventListener("drop", handleDrop);
+    listEl.addEventListener("drop", handleDrop);
 
     return () => {
-      articleEl.removeEventListener("dragover", handleDragover);
-      articleEl.removeEventListener("dragleave", handleDragLeave);
-      articleEl.removeEventListener("drop", handleDrop);
+      listEl.removeEventListener("dragover", handleDragover);
+      listEl.removeEventListener("dragleave", handleDragLeave);
+      listEl.removeEventListener("drop", handleDrop);
     };
   };
 

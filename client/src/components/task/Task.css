@@ -23,7 +23,7 @@ textarea {
 
   background: none;
   resize: none;
-  /* border: 2px solid var(--surface-1); */
+
   border: none;
   border-radius: var(--border-radius);
 }
@@ -33,7 +33,13 @@ textarea {
 
   font-size: 1.25em;
   font-weight: bold;
-  text-decoration: underline;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid var(--subtext-1);
+}
+
+#title:focus {
+  border-radius: var(--border-radius);
 }
 
 #content {

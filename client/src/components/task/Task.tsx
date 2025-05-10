@@ -11,6 +11,7 @@ interface TaskProps {
 export default function Task({ id, title, content, status }: TaskProps) {
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
+
   const dragEventListeners = () => {
     const taskEl = document.getElementById(id);
     if (!taskEl) {
