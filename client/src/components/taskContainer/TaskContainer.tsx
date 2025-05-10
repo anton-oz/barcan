@@ -23,6 +23,14 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
   const addTask = async () => {
     console.log("under construction");
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {
+    const key = e.code;
+    if (key === "Enter" || key === "Space") {
+      addTask();
+    }
+  };
+
   const dragEventListeners = () => {
     const articleEl = document.getElementById(title);
     if (!articleEl) {
@@ -90,7 +98,15 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
           // TODO:
           // - set this to its own component
           // - have this button toggle focus on newly created task
-          <Plus id="todoButton" role="button" size={30} onClick={addTask} />
+          <Plus
+            id="todoButton"
+            role="button"
+            aria-label="Add Task"
+            tabIndex={0}
+            size={30}
+            onClick={addTask}
+            onKeyDown={handleKeyDown}
+          />
         ) : null}
       </header>
       <article>
@@ -101,6 +117,7 @@ export default function TaskContainer({ title, tasks }: TaskContainerProps) {
               id={`task-${i}`}
               title={task.title}
               content={task.content}
+              status={task.status}
             />
           ))}
         </ul>

@@ -5,9 +5,10 @@ interface TaskProps {
   id: string;
   title: string;
   content: string;
+  status?: string;
 }
 
-export default function Task({ id, title, content }: TaskProps) {
+export default function Task({ id, title, content, status }: TaskProps) {
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
   const dragEventListeners = () => {
@@ -77,7 +78,7 @@ export default function Task({ id, title, content }: TaskProps) {
   };
 
   return (
-    <li id={id} draggable className="task">
+    <li id={id} data-status={status} draggable className="task">
       <textarea
         id="title"
         role="task title"

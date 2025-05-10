@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useTaskContext } from "./providers";
 import Nav from "./components/nav/Nav";
 import TaskContainer from "./components/taskContainer/TaskContainer";
 import "./App.css";
@@ -12,29 +12,7 @@ export interface TaskData {
 }
 
 function App() {
-  const [tasks, setTasks] = useState<TaskData[]>([]);
-  const fetchTasks = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/tasks");
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Error: ", error);
-    }
-  };
-
-  useEffect(() => {
-    const handleSetTasks = async () => {
-      try {
-        const tasks = await fetchTasks();
-        setTasks(tasks);
-      } catch (error) {
-        console.error("Could not fetch tasks: ", error);
-      }
-    };
-    handleSetTasks();
-  }, []);
+  const tasks = useTaskContext();
 
   return (
     <>
