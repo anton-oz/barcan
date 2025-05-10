@@ -103,8 +103,10 @@ export default function Task({ id, title, content, status }: TaskProps) {
     <li
       id={id}
       onKeyDown={(e) => {
-        const editShortcut = e.ctrlKey && e.altKey && e.key === "e";
+        const editShortcut = e.ctrlKey && e.key === "E";
+        console.log(e.key);
         if (editShortcut) {
+          console.log("wu");
           setIsFocusable(!isFocusable);
         }
         // const saveShortcut = e.ctrlKey && e.altKey && e.key === "s";
