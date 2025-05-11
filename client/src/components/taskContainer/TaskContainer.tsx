@@ -26,7 +26,7 @@ export default function TaskContainer({
   heading,
   filteredTasks,
 }: TaskContainerProps) {
-  const { setTasks } = useTaskContext();
+  const { tasks, setTasks } = useTaskContext();
 
   const addTask = async () => {
     setTasks((prevState) => [
@@ -96,24 +96,25 @@ export default function TaskContainer({
       task.dataset.status = taskStatus;
       const taskDataId = task.id;
 
+      const match = tasks.filter((item) => item.id === +taskDataId)[0];
+      match.status = taskStatus;
+      setTasks((prevState) => prevState.map((item) => item));
+
+      // TODO: move to context to update the db
       const options: RequestInit = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: taskStatus }),
       };
-
       fetch(`http://localhost:3000/task/${taskDataId}`, options);
 
-      listEl.appendChild(task);
       if (listEl.parentElement) {
         listEl.parentElement.style.border = "none";
       }
     };
 
     listEl.addEventListener("dragover", handleDragover);
-
     listEl.addEventListener("dragleave", handleDragLeave);
-
     listEl.addEventListener("drop", handleDrop);
 
     return () => {

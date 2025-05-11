@@ -34,9 +34,9 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("tasks context: ", tasks);
-  // }, [tasks]);
+  useEffect(() => {
+    console.log("context update: ", tasks);
+  }, [tasks]);
 
   useEffect(() => {
     handleSetTasks();
