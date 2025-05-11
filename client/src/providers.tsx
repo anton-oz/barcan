@@ -34,9 +34,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // useEffect(() => {
+  //   console.log("tasks context: ", tasks);
+  // }, [tasks]);
+
   useEffect(() => {
     handleSetTasks();
   }, [retry]);
+
   // NOTE: PLACEHOLDER
   const value = { tasks, setTasks, retry, setRetry };
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

@@ -1,12 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { Task as TaskProps } from "../../context/TaskContext";
 import "./Task.css";
-
-interface TaskProps {
-  id: string;
-  title: string;
-  content: string;
-  status?: string;
-}
 
 export default function Task({ id, title, content, status }: TaskProps) {
   const [taskTitle, setTaskTitle] = useState(title);
@@ -14,7 +8,7 @@ export default function Task({ id, title, content, status }: TaskProps) {
   const [isFocusable, setIsFocusable] = useState(false);
 
   const dragEventListeners = () => {
-    const taskEl = document.getElementById(id);
+    const taskEl = document.getElementById(id.toString());
     if (!taskEl) {
       throw new Error("Error: task element is undefined in Task component");
     }
@@ -30,7 +24,7 @@ export default function Task({ id, title, content, status }: TaskProps) {
       }
 
       e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text", id);
+      e.dataTransfer.setData("text", id.toString());
 
       taskEl.style.opacity = "50%";
     };
@@ -101,21 +95,12 @@ export default function Task({ id, title, content, status }: TaskProps) {
 
   return (
     <li
-      id={id}
+      id={id.toString()}
       onKeyDown={(e) => {
         const editShortcut = e.ctrlKey && e.key === "E";
-        console.log(e.key);
         if (editShortcut) {
-          console.log("wu");
           setIsFocusable(!isFocusable);
         }
-        // const saveShortcut = e.ctrlKey && e.altKey && e.key === "s";
-        // if (isFocusable && saveShortcut) {
-        //   // TODO:
-        //   // save the task to the db here
-        //   setIsFocusable(false);
-        //   return;
-        // }
       }}
       style={{
         outline: isFocusable ? "solid var(--blue)" : "",
@@ -127,6 +112,7 @@ export default function Task({ id, title, content, status }: TaskProps) {
     >
       <textarea
         ref={titleRef}
+        // onFocus={() => setIsFocusable(true)}
         tabIndex={isFocusable ? 0 : -1}
         className="title"
         role="task title"
@@ -137,6 +123,7 @@ export default function Task({ id, title, content, status }: TaskProps) {
         rows={1}
       />
       <textarea
+        // onFocus={() => setIsFocusable(true)}
         tabIndex={isFocusable ? 0 : -1}
         className="content"
         role="task content"

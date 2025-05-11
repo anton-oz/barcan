@@ -26,7 +26,7 @@ export default function TaskContainer({
   heading,
   filteredTasks,
 }: TaskContainerProps) {
-  const { tasks, setTasks } = useTaskContext();
+  const { setTasks } = useTaskContext();
 
   const addTask = async () => {
     setTasks((prevState) => [
@@ -38,7 +38,6 @@ export default function TaskContainer({
         status: "Todo",
       },
     ]);
-    console.log(tasks);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {
@@ -85,11 +84,26 @@ export default function TaskContainer({
           "Error: could not access data transfer event TaskContainer",
         );
       }
-      const data = e.dataTransfer.getData("text");
-      const task = document.getElementById(data);
+      const taskId = e.dataTransfer.getData("text");
+      const task = document.getElementById(taskId);
       if (!task) {
+        console.log(task);
         throw new Error("Error: task is null could not complete drop");
       }
+      // TODO:
+      // update tasks array on drop event
+      const taskStatus = `${listEl.id}`;
+      task.dataset.status = taskStatus;
+      const taskDataId = task.id;
+
+      const options: RequestInit = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: taskStatus }),
+      };
+
+      fetch(`http://localhost:3000/task/${taskDataId}`, options);
+
       listEl.appendChild(task);
       if (listEl.parentElement) {
         listEl.parentElement.style.border = "none";
@@ -132,10 +146,10 @@ export default function TaskContainer({
       </header>
       <article>
         <ul id={heading}>
-          {[...filteredTasks].reverse().map((task, i) => (
+          {[...filteredTasks].reverse().map((task) => (
             <Task
               key={task.id}
-              id={`task-${i}`}
+              id={task.id}
               title={task.title}
               content={task.content}
               status={task.status}
