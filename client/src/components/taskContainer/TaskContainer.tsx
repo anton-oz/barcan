@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Plus } from "lucide-react";
 import Task from "../task/Task";
 import "./TaskContainer.css";
-import { useTaskContext } from "../../providers";
+import { useTaskContext } from "../../context/TaskContext";
 import { Task as TaskData } from "../../context/TaskContext";
 
 interface TaskContainerProps {

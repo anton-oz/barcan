@@ -1,13 +1,34 @@
-import { useState, useEffect, useContext, ReactNode } from "react";
-import { TaskContext } from "./context/TaskContext";
-import { Task } from "./context/TaskContext";
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  Dispatch,
+  SetStateAction,
+  ReactNode,
+} from "react";
 
-// NOTE:
-// this file only exists because for some
-// reason I cannot have context providers
-// in sub directories
+export interface Task {
+  id: number;
+  title: string;
+  content: string;
+  status: string;
+}
 
-export const useTaskContext = () => useContext(TaskContext);
+interface TaskContextDataType {
+  tasks: Task[];
+  setTasks: Dispatch<SetStateAction<Task[]>>;
+  retry: boolean;
+  setRetry: Dispatch<SetStateAction<boolean>>;
+}
+
+export const TaskContext = createContext<TaskContextDataType | null>(null);
+
+export const useTaskContext = () => {
+  const context = useContext(TaskContext);
+  if (!context) throw new Error("context is null");
+  return context;
+};
 
 export function TaskProvider({ children }: { children: ReactNode }) {
   const [tasks, setTasks] = useState<Task[]>([]);
