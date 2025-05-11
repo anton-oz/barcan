@@ -106,7 +106,7 @@ export default function TaskContainer({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: taskStatus }),
       };
-      fetch(`http://localhost:3000/task/${taskDataId}`, options);
+      fetch(`http://localhost:3000/api/tasks/${taskDataId}`, options);
 
       if (listEl.parentElement) {
         listEl.parentElement.style.border = "none";
