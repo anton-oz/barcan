@@ -1,12 +1,12 @@
 import {
-  useState,
   useEffect,
   createContext,
   useContext,
   Dispatch,
-  SetStateAction,
   ReactNode,
+  useReducer,
 } from "react";
+import reducer, { Action, State } from "./reducers";
 
 export interface Task {
   id: number;
@@ -15,14 +15,12 @@ export interface Task {
   status: string;
 }
 
-interface TaskContextDataType {
-  tasks: Task[];
-  setTasks: Dispatch<SetStateAction<Task[]>>;
-  retry: boolean;
-  setRetry: Dispatch<SetStateAction<boolean>>;
+interface TaskContextType {
+  state: State;
+  dispatch: Dispatch<Action>;
 }
 
-export const TaskContext = createContext<TaskContextDataType | null>(null);
+export const TaskContext = createContext<TaskContextType | null>(null);
 
 export const useTaskContext = () => {
   const context = useContext(TaskContext);
@@ -31,39 +29,34 @@ export const useTaskContext = () => {
 };
 
 export function TaskProvider({ children }: { children: ReactNode }) {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [retry, setRetry] = useState(false);
-
-  const fetchTasks = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/tasks");
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error("Error: ", error);
-      return null;
-    }
+  const initialState: State = {
+    tasks: [],
   };
 
-  const handleSetTasks = async () => {
-    try {
-      const tasks = await fetchTasks();
-      setTasks(tasks);
-      setRetry(false);
-    } catch (error) {
-      console.error("Could not fetch tasks: ", error);
-    }
-  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    console.log("context update: ", tasks);
-  }, [tasks]);
+    const fetchTasks = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/tasks");
+        const data = await res.json();
+        dispatch({ type: "SET_TASKS", payload: { tasks: data } });
+      } catch (error) {
+        console.error("Error: ", error);
+        return null;
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   useEffect(() => {
-    handleSetTasks();
-  }, [retry]);
+    console.log("task state change");
+  }, [state.tasks]);
 
-  // NOTE: PLACEHOLDER
-  const value = { tasks, setTasks, retry, setRetry };
-  return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
+  return (
+    <TaskContext.Provider value={{ state, dispatch }}>
+      {children}
+    </TaskContext.Provider>
+  );
 }

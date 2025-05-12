@@ -4,11 +4,8 @@ import TaskContainer from "./components/taskContainer/TaskContainer";
 import "./App.css";
 
 function App() {
-  const { tasks, setRetry } = useTaskContext();
-
-  const handleRetry = () => {
-    setRetry(true);
-  };
+  const { state } = useTaskContext();
+  const { tasks } = state;
 
   return (
     <>
@@ -16,7 +13,7 @@ function App() {
       {tasks === null ? (
         <div id="error">
           <h2>Error</h2>
-          <button onClick={handleRetry}>Retry</button>
+          {/* <button onClick={handleRetry}>Retry</button> */}
         </div>
       ) : null}
       <main>

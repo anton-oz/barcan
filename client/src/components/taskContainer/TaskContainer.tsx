@@ -4,6 +4,8 @@ import Task from "../task/Task";
 import "./TaskContainer.css";
 import { useTaskContext } from "../../context/TaskContext";
 import { Task as TaskData } from "../../context/TaskContext";
+import { AtLeastOne } from "../../context/TaskContext/reducers";
+import { useTaskActions } from "../../hooks/useTaskActions";
 
 interface TaskContainerProps {
   heading: "Todo" | "In Progress" | "Done";
@@ -21,23 +23,46 @@ interface TaskContainerProps {
  * to bottom of list instead of swapping with
  * the task it got dropped on
  */
+// const handleUpdate = async (
+//   id: number,
+//   body: AtLeastOne<TaskData> | object,
+// ) => {
+//   if (!body) throw new Error("body is undefined");
+//   const options: RequestInit = {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(body),
+//   };
+//   const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
+//   console.log(res);
+//   console.log("good response");
+// };
 
 export default function TaskContainer({
   heading,
   filteredTasks,
 }: TaskContainerProps) {
-  const { tasks, setTasks } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
+  const { updateTaskStatus } = useTaskActions();
+  const { tasks } = state;
 
   const addTask = async () => {
-    setTasks((prevState) => [
-      ...prevState,
-      {
-        id: prevState.length + 1,
-        title: "",
-        content: "",
-        status: "Todo",
-      },
-    ]);
+    // setTasks((prevState) => [
+    //   ...prevState,
+    //   {
+    //     id: prevState.length + 1,
+    //     title: "",
+    //     content: "",
+    //     status: "Todo",
+    //   },
+    // ]);
+    const newTask = {
+      id: tasks.length + 1,
+      title: "",
+      content: "",
+      status: "Todo",
+    };
+    dispatch({ type: "ADD_TASK", payload: { tasks: [...tasks, newTask] } });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {
@@ -94,19 +119,31 @@ export default function TaskContainer({
       // update tasks array on drop event
       const taskStatus = `${listEl.id}`;
       task.dataset.status = taskStatus;
-      const taskDataId = task.id;
+      const taskDataId = +task.id;
 
       const match = tasks.filter((item) => item.id === +taskDataId)[0];
       match.status = taskStatus;
-      setTasks((prevState) => prevState.map((item) => item));
+
+      updateTaskStatus(taskDataId, taskStatus);
+
+      // handleUpdate(+taskDataId, { status: taskStatus });
+      //
+      // dispatch({
+      //   type: "UPDATE_TASK",
+      //   payload: {
+      //     tasks: [...tasks],
+      //     update: { status: taskStatus },
+      //     id: +taskDataId,
+      //   },
+      // });
 
       // TODO: move to context to update the db
-      const options: RequestInit = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: taskStatus }),
-      };
-      fetch(`http://localhost:3000/api/tasks/${taskDataId}`, options);
+      // const options: RequestInit = {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ status: taskStatus }),
+      // };
+      // fetch(`http://localhost:3000/api/tasks/${taskDataId}`, options);
 
       if (listEl.parentElement) {
         listEl.parentElement.style.border = "none";
