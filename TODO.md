@@ -4,9 +4,9 @@
 
     - keep main sacred and pristine
 
-[ ] add highlighting to container when you hover the draggable over it
-
 [ ] fix adding tasks
+
+    - including adding to db
 
 [ ] get api logic working 
 
@@ -19,3 +19,9 @@
 [ ] add delete button to task
 
 [ ] add selector to nav bar to have different task boards
+
+
+## Done
+
+[x] add highlighting to container when you hover the draggable over it
+

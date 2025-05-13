@@ -38,7 +38,6 @@ header > #todoButton {
   cursor: pointer;
 
   transition-duration: 200ms;
-  /* transform: scale(0.7); */
   transition:
     outline 0s,
     color 200ms,
@@ -66,7 +65,7 @@ ul {
   border-radius: var(--border-radius);
   outline: 2px solid var(--base);
 
-  transition: all;
+  transition: background;
   transition-duration: 200ms;
 
   overflow-x: hidden;
