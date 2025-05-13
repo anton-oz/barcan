@@ -30,7 +30,7 @@ export default function TaskContainer({
       content: "",
       status: "Todo",
     };
-    dispatch({ type: "ADD_TASK", payload: { tasks: [...tasks, newTask] } });
+    dispatch({ type: "ADD_TASK", payload: { tasks: [newTask, ...tasks] } });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {

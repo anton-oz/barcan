@@ -41,9 +41,9 @@ export default function reducer(state: State, action: Action): State {
     }
 
     case ADD_TASK: {
-      if (!Array.isArray(action.payload) || !action.payload.tasks)
-        throw new Error("SET_TASKS: Incorrect payload type");
-      return { ...state, tasks: action.payload };
+      if (!Array.isArray(action.payload.tasks))
+        throw new Error("ADD_TASKS: Incorrect payload type");
+      return { ...state, tasks: action.payload.tasks };
     }
 
     case UPDATE_TASK: {
@@ -55,7 +55,7 @@ export default function reducer(state: State, action: Action): State {
 
       if (!action.payload.tasks) throw new Error("tasks is undefined");
       if (!Array.isArray(action.payload.tasks))
-        throw new Error("SET_TASKS: Incorrect payload type");
+        throw new Error("UPDATE_TASK: Incorrect payload type");
 
       const updatedTasks = action.payload.tasks.map((task) =>
         task.id === action.payload?.id
