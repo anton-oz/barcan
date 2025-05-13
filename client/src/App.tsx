@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTaskContext } from "./context/TaskContext";
 import Nav from "./components/nav/Nav";
 import TaskContainer from "./components/taskContainer/TaskContainer";
@@ -11,6 +12,8 @@ function App() {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
+  const [error, setError] = useState(false);
+
   const handleUpdate = async (id: number, body: AtLeastOne<Task>) => {
     if (!body) throw new Error("body is undefined");
     const options: RequestInit = {
@@ -18,11 +21,17 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     };
-    // TODO:
-    // notify user if this fails
-    const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
-    const data = await res.json();
-    console.log(data);
+    try {
+      const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
+      const data = await res.json();
+      const allGood = data[0];
+      if (!allGood) {
+        throw new Error("bad response :(");
+      }
+    } catch (error) {
+      console.error("Could not update: ", error);
+      setError(true);
+    }
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -45,12 +54,12 @@ function App() {
   return (
     <>
       <Nav />
-      {tasks === null ? (
-        <div id="error">
-          <h2>Error</h2>
-          {/* <button onClick={handleRetry}>Retry</button> */}
-        </div>
-      ) : null}
+      {/* {error ? ( */}
+      <div id="error" style={{ opacity: error ? "100" : "0" }}>
+        <h2>Error</h2>
+        {/* <button onClick={handleRetry}>Retry</button> */}
+      </div>
+      {/* ) : null} */}
       <main>
         <DragDropContext onDragEnd={handleDragEnd}>
           <TaskContainer

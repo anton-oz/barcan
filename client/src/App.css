@@ -15,8 +15,11 @@ section {
 
 #error {
   width: 13%;
-  margin: 0.5em;
+  margin: 1em;
   padding: 1em;
+  position: absolute;
+  top: 0;
+  right: 0;
 
   background: var(--surface-0);
 
@@ -26,6 +29,9 @@ section {
 
   border: 2px solid var(--red);
   border-radius: var(--border-radius);
+
+  transition: all;
+  transition-duration: 200ms;
 }
 
 #error > h2 {

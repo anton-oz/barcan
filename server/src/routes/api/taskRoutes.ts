@@ -3,14 +3,14 @@ import { Task } from "../../db/models";
 
 const taskRoutes = Router();
 
-taskRoutes.post("/", async (req: Request, res: Response) => {
-  const task = await Task.create(req.body);
-  res.json(task);
-});
-
 taskRoutes.get("/", async (req: Request, res: Response) => {
   const tasks = await Task.findAll();
   res.json(tasks);
+});
+
+taskRoutes.post("/", async (req: Request, res: Response) => {
+  const task = await Task.create(req.body);
+  res.json(task);
 });
 
 taskRoutes.post("/:id", async (req: Request, res: Response) => {
