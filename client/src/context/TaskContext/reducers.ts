@@ -47,7 +47,6 @@ export default function reducer(state: State, action: Action): State {
     }
 
     case UPDATE_TASK: {
-      console.log("update called");
       const updateOpts = { ...action.payload.update };
       if (!updateOpts) throw new Error("Update opts is empty");
 
@@ -66,7 +65,6 @@ export default function reducer(state: State, action: Action): State {
     }
 
     case DELETE_TASK: {
-      console.log("delete task");
       return state;
     }
 

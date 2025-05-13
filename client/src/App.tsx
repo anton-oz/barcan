@@ -20,7 +20,6 @@ function App() {
     };
     // TODO:
     // notify user if this fails
-    console.log("called handleUpdate");
     const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
     const data = await res.json();
     console.log(data);
