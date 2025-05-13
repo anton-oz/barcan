@@ -17,7 +17,7 @@ taskRoutes.post("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const status = req.body.status;
   const task = await Task.update({ status }, { where: { id } });
-  console.log(task);
+  res.json(task);
 });
 
 export default taskRoutes;

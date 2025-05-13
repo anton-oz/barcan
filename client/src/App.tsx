@@ -1,13 +1,19 @@
-import { useTaskContext } from "./context/TaskContext";
+import { useEffect, useState } from "react";
+import { Task, useTaskContext } from "./context/TaskContext";
 import Nav from "./components/nav/Nav";
 import TaskContainer from "./components/taskContainer/TaskContainer";
 import "./App.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { UPDATE_TASK } from "./context/TaskContext/actions";
+import { AtLeastOne } from "./context/TaskContext/reducers";
 
 function App() {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
+
+  const [update, setUpdate] = useState(false);
+  const [updatedTask, setUpdatedTask] = useState<AtLeastOne<Task> | null>(null);
+  const [updatedTaskId, setUpdatedTaskId] = useState<number | null>(null);
 
   const handleUpdate = async (
     id: number,
@@ -22,7 +28,10 @@ function App() {
     };
     // TODO:
     // notify user if this fails
-    await fetch(`http://localhost:3000/api/tasks/${id}`, options);
+    console.log("called handleUpdate");
+    const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
+    const data = await res.json();
+    console.log(data);
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -40,6 +49,9 @@ function App() {
       },
     });
     handleUpdate(taskId, { status });
+    // setUpdatedTaskId(taskId);
+    // setUpdatedTask({ status });
+    // setUpdate(true);
   };
 
   return (
