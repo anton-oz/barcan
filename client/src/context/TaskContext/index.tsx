@@ -50,10 +50,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     fetchTasks();
   }, []);
 
-  useEffect(() => {
-    console.log("task state change");
-  }, [state.tasks]);
-
   return (
     <TaskContext.Provider value={{ state, dispatch }}>
       {children}

@@ -1,50 +1,18 @@
 import { useState, useEffect, useRef } from "react";
+import { DraggableProvided } from "@hello-pangea/dnd";
 import { Task as TaskProps } from "../../context/TaskContext";
 import "./Task.css";
 
-export default function Task({ id, title, content, status }: TaskProps) {
+interface Props {
+  task: TaskProps;
+  provided: DraggableProvided;
+}
+
+export default function Task({ task, provided }: Props) {
+  const { id, title, content, status } = task;
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
   const [isFocusable, setIsFocusable] = useState(false);
-
-  const dragEventListeners = () => {
-    const taskEl = document.getElementById(id.toString());
-    if (!taskEl) {
-      throw new Error("Error: task element is undefined in Task component");
-    }
-
-    const handleDragStart = (e: DragEvent) => {
-      // NOTE: disabled to keep default image dragging,
-      // change if wnat to change the drag image
-      // e.preventDefault();
-      e.stopPropagation();
-
-      if (!e.dataTransfer) {
-        throw new Error("Error: dataTransfer event is null.");
-      }
-
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text", id.toString());
-
-      taskEl.style.opacity = "50%";
-    };
-
-    const handleDragEnd = (e: DragEvent) => {
-      e.stopPropagation();
-      taskEl.style.opacity = "100%";
-    };
-
-    taskEl.addEventListener("dragstart", handleDragStart);
-
-    taskEl.addEventListener("dragend", handleDragEnd);
-
-    return () => {
-      taskEl.removeEventListener("dragstart", handleDragStart);
-      taskEl.removeEventListener("dragend", handleDragEnd);
-    };
-  };
-
-  useEffect(dragEventListeners);
 
   useEffect(() => {
     if (document.activeElement instanceof HTMLElement)
@@ -95,6 +63,9 @@ export default function Task({ id, title, content, status }: TaskProps) {
 
   return (
     <li
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
       id={id.toString()}
       onKeyDown={(e) => {
         const editShortcut = e.ctrlKey && e.key === "E";
@@ -104,10 +75,11 @@ export default function Task({ id, title, content, status }: TaskProps) {
       }}
       style={{
         outline: isFocusable ? "solid var(--blue)" : "",
+        ...provided.draggableProps.style,
       }}
       tabIndex={0}
       data-status={status}
-      draggable
+      // draggable
       className="task"
     >
       <textarea

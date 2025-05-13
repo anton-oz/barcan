@@ -52,12 +52,17 @@ export default function reducer(state: State, action: Action): State {
       if (!updateOpts) throw new Error("Update opts is empty");
 
       if (!action.payload.id) throw new Error("id required for update");
-      // handleUpdate(action.payload.id, { ...action.payload.update });
 
       if (!action.payload.tasks) throw new Error("tasks is undefined");
       if (!Array.isArray(action.payload.tasks))
         throw new Error("SET_TASKS: Incorrect payload type");
-      return { ...state, tasks: action.payload.tasks };
+
+      const updatedTasks = action.payload.tasks.map((task) =>
+        task.id === action.payload?.id
+          ? { ...task, ...action.payload?.update }
+          : task,
+      );
+      return { ...state, tasks: updatedTasks };
     }
 
     case DELETE_TASK: {

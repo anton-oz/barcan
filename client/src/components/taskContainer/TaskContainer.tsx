@@ -1,11 +1,10 @@
-import { useEffect } from "react";
 import { Plus } from "lucide-react";
 import Task from "../task/Task";
 import "./TaskContainer.css";
 import { useTaskContext } from "../../context/TaskContext";
 import { Task as TaskData } from "../../context/TaskContext";
-import { AtLeastOne } from "../../context/TaskContext/reducers";
-import { useTaskActions } from "../../hooks/useTaskActions";
+
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 
 interface TaskContainerProps {
   heading: "Todo" | "In Progress" | "Done";
@@ -17,45 +16,14 @@ interface TaskContainerProps {
  * add custom scrollbar component for scrollable content
  */
 
-/**
- * BUG:
- * dragging tasks into same container moves them
- * to bottom of list instead of swapping with
- * the task it got dropped on
- */
-// const handleUpdate = async (
-//   id: number,
-//   body: AtLeastOne<TaskData> | object,
-// ) => {
-//   if (!body) throw new Error("body is undefined");
-//   const options: RequestInit = {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(body),
-//   };
-//   const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
-//   console.log(res);
-//   console.log("good response");
-// };
-
 export default function TaskContainer({
   heading,
   filteredTasks,
 }: TaskContainerProps) {
   const { state, dispatch } = useTaskContext();
-  const { updateTaskStatus } = useTaskActions();
   const { tasks } = state;
 
   const addTask = async () => {
-    // setTasks((prevState) => [
-    //   ...prevState,
-    //   {
-    //     id: prevState.length + 1,
-    //     title: "",
-    //     content: "",
-    //     status: "Todo",
-    //   },
-    // ]);
     const newTask = {
       id: tasks.length + 1,
       title: "",
@@ -71,97 +39,6 @@ export default function TaskContainer({
       addTask();
     }
   };
-
-  const dragEventListeners = () => {
-    const listEl = document.getElementById(heading);
-    if (!listEl) {
-      throw new Error("Error: listEl is undefined in TaskContainer component");
-    }
-
-    let lastTime = 0;
-    const throttleTime = 250;
-
-    const handleDragover = (e: DragEvent) => {
-      const now = Date.now();
-      e.preventDefault();
-      e.stopPropagation();
-      if (now - lastTime >= throttleTime) {
-        lastTime = now;
-        if (listEl.parentElement) {
-          listEl.parentElement.style.border = "2px solid var(--text)";
-        }
-      }
-    };
-
-    const handleDragLeave = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (listEl.parentElement) {
-        listEl.parentElement.style.border = "none";
-      }
-    };
-
-    const handleDrop = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!e.dataTransfer) {
-        throw new Error(
-          "Error: could not access data transfer event TaskContainer",
-        );
-      }
-      const taskId = e.dataTransfer.getData("text");
-      const task = document.getElementById(taskId);
-      if (!task) {
-        console.log(task);
-        throw new Error("Error: task is null could not complete drop");
-      }
-      // TODO:
-      // update tasks array on drop event
-      const taskStatus = `${listEl.id}`;
-      task.dataset.status = taskStatus;
-      const taskDataId = +task.id;
-
-      const match = tasks.filter((item) => item.id === +taskDataId)[0];
-      match.status = taskStatus;
-
-      updateTaskStatus(taskDataId, taskStatus);
-
-      // handleUpdate(+taskDataId, { status: taskStatus });
-      //
-      // dispatch({
-      //   type: "UPDATE_TASK",
-      //   payload: {
-      //     tasks: [...tasks],
-      //     update: { status: taskStatus },
-      //     id: +taskDataId,
-      //   },
-      // });
-
-      // TODO: move to context to update the db
-      // const options: RequestInit = {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ status: taskStatus }),
-      // };
-      // fetch(`http://localhost:3000/api/tasks/${taskDataId}`, options);
-
-      if (listEl.parentElement) {
-        listEl.parentElement.style.border = "none";
-      }
-    };
-
-    listEl.addEventListener("dragover", handleDragover);
-    listEl.addEventListener("dragleave", handleDragLeave);
-    listEl.addEventListener("drop", handleDrop);
-
-    return () => {
-      listEl.removeEventListener("dragover", handleDragover);
-      listEl.removeEventListener("dragleave", handleDragLeave);
-      listEl.removeEventListener("drop", handleDrop);
-    };
-  };
-
-  useEffect(dragEventListeners);
 
   return (
     <section>
@@ -183,17 +60,31 @@ export default function TaskContainer({
         ) : null}
       </header>
       <article>
-        <ul id={heading}>
-          {[...filteredTasks].reverse().map((task) => (
-            <Task
-              key={task.id}
-              id={task.id}
-              title={task.title}
-              content={task.content}
-              status={task.status}
-            />
-          ))}
-        </ul>
+        <Droppable droppableId={heading}>
+          {(provided) => (
+            <ul
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              id={heading}
+            >
+              {/*
+                TODO:
+                create logic to handle sorting, and make new tasks appear at top of
+                todo list
+              */}
+              {[...filteredTasks].map((task, i) => (
+                <Draggable
+                  key={task.id}
+                  draggableId={`task-${task.id}`}
+                  index={i}
+                >
+                  {(provided) => <Task task={task} provided={provided} />}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </ul>
+          )}
+        </Droppable>
       </article>
     </section>
   );
