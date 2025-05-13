@@ -59,33 +59,34 @@ export default function TaskContainer({
           />
         ) : null}
       </header>
-      <article>
-        <Droppable droppableId={heading}>
-          {(provided) => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              id={heading}
-            >
-              {/*
+      <Droppable droppableId={heading}>
+        {(provided, snapshot) => (
+          <ul
+            {...provided.droppableProps}
+            style={{
+              background: snapshot.isDraggingOver ? "var(--surface-1)" : "",
+            }}
+            ref={provided.innerRef}
+            id={heading}
+          >
+            {/*
                 TODO:
                 create logic to handle sorting, and make new tasks appear at top of
                 todo list
               */}
-              {[...filteredTasks].map((task, i) => (
-                <Draggable
-                  key={task.id}
-                  draggableId={`task-${task.id}`}
-                  index={i}
-                >
-                  {(provided) => <Task task={task} provided={provided} />}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </article>
+            {[...filteredTasks].map((task, i) => (
+              <Draggable
+                key={task.id}
+                draggableId={`task-${task.id}`}
+                index={i}
+              >
+                {(provided) => <Task task={task} provided={provided} />}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
     </section>
   );
 }
