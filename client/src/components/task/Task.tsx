@@ -64,7 +64,6 @@ export default function Task({ task, provided }: Props) {
     if (!deleteBtn.parentElement?.parentElement) throw new Error("im batman");
     const task = deleteBtn.parentElement.parentElement;
     const taskId = +task.id;
-    console.log(task, task.id);
 
     dispatch({ type: "DELETE_TASK", payload: { id: taskId, tasks } });
 
