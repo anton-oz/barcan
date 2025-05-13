@@ -4,16 +4,14 @@ import TaskContainer from "./components/taskContainer/TaskContainer";
 import "./App.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { UPDATE_TASK } from "./context/TaskContext/actions";
+import { AtLeastOne } from "./context/TaskContext/reducers";
+import { Task } from "./context/TaskContext";
 
 function App() {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
-  const handleUpdate = async (
-    id: number,
-    body: object,
-    // body: AtLeastOne<TaskData> | object,
-  ) => {
+  const handleUpdate = async (id: number, body: AtLeastOne<Task>) => {
     if (!body) throw new Error("body is undefined");
     const options: RequestInit = {
       method: "POST",
