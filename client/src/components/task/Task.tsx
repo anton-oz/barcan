@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { DraggableProvided } from "@hello-pangea/dnd";
-import { Task as TaskProps } from "../../context/TaskContext";
+import { Task as TaskProps, useTaskContext } from "../../context/TaskContext";
 import "./Task.css";
+import { X } from "lucide-react";
 
 interface Props {
   task: TaskProps;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export default function Task({ task, provided }: Props) {
+  const { state, dispatch } = useTaskContext();
+  const { tasks } = state;
   const { id, title, content, status } = task;
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
@@ -40,6 +43,32 @@ export default function Task({ task, provided }: Props) {
         console.error("Error: Could not update task change event");
         return;
     }
+  };
+
+  const handleDeleteReq = async (id: number) => {
+    const options: RequestInit = {
+      method: "DELETE",
+    };
+    try {
+      const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
+      if (!res.ok) {
+        throw new Error("bad delete request");
+      }
+    } catch (error) {
+      console.error("could not delete: ", error);
+    }
+  };
+
+  const handleDelete = (e: React.MouseEvent<SVGElement>) => {
+    const deleteBtn = e.target as HTMLElement;
+    if (!deleteBtn.parentElement?.parentElement) throw new Error("im batman");
+    const task = deleteBtn.parentElement.parentElement;
+    const taskId = +task.id;
+    console.log(task, task.id);
+
+    dispatch({ type: "DELETE_TASK", payload: { id: taskId, tasks } });
+
+    handleDeleteReq(taskId);
   };
 
   const autoResizeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -82,6 +111,13 @@ export default function Task({ task, provided }: Props) {
       // draggable
       className="task"
     >
+      <div style={{ position: "relative", height: "0", width: "100%" }}>
+        <X
+          className="deleteBtn"
+          onClick={handleDelete}
+          data-parent={id.toString()}
+        />
+      </div>
       <textarea
         ref={titleRef}
         // onFocus={() => setIsFocusable(true)}

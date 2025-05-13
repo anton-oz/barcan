@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Task } from "../../db/models";
+import { where } from "sequelize";
 
 const taskRoutes = Router();
 
@@ -17,6 +18,16 @@ taskRoutes.post("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
   const status = req.body.status;
   const task = await Task.update({ status }, { where: { id } });
+  res.json(task);
+});
+
+taskRoutes.delete("/:id", async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const task = await Task.destroy({
+    where: {
+      id,
+    },
+  });
   res.json(task);
 });
 

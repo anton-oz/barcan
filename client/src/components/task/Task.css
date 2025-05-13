@@ -5,7 +5,7 @@
   margin-bottom: 0.25em;
   padding: 1em;
 
-  gap: 0.5em 0;
+  /* gap: 0.5em 0; */
 
   background: var(--surface-0);
   border-radius: var(--border-radius);
@@ -31,6 +31,8 @@ textarea {
 .title {
   color: var(--rosewater);
 
+  margin-bottom: 0.5em;
+
   font-size: 1.25em;
   font-weight: bold;
   border-bottom-left-radius: 0;
@@ -49,4 +51,13 @@ textarea {
   resize: vertical;
 
   overflow: none;
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  background: transparent;
+  cursor: pointer;
 }

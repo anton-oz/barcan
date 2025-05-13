@@ -65,7 +65,16 @@ export default function reducer(state: State, action: Action): State {
     }
 
     case DELETE_TASK: {
-      return state;
+      const taskId = action.payload.id;
+      if (!taskId) throw new Error("DELETE_TASK: undefined taskId");
+
+      if (!action.payload.tasks) throw new Error("tasks is undefined");
+      if (!Array.isArray(action.payload.tasks))
+        throw new Error("UPDATE_TASK: Incorrect payload type");
+      const updatedTasks = action.payload.tasks.filter(
+        (task) => task.id !== taskId,
+      );
+      return { ...state, tasks: updatedTasks };
     }
 
     default:
