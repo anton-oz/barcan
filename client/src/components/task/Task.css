@@ -29,7 +29,8 @@ textarea {
 }
 
 .title {
-  width: fit-content;
+  width: 50%;
+
   margin-bottom: 0.5em;
   padding: 0.25em;
 

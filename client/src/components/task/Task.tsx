@@ -15,7 +15,7 @@ export default function Task({ task, provided, snapshot }: Props) {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
-  const { id, title, content, status } = task;
+  const { id, title, content } = task;
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
@@ -29,10 +29,16 @@ export default function Task({ task, provided, snapshot }: Props) {
       case "title":
         // TODO:
         // add visual indicator to page when too long, like a red border
-        if (value.length === 48) {
-          console.error("too long");
+
+        if (value.length === 27) {
+          target.style.outline = "2.5px solid var(--red)";
+          target.style.borderRadius = "var(--border-radius)";
+          target.style.borderColor = "transparent";
           return;
         }
+        target.style.outline = "";
+        target.style.borderRadius = "";
+        target.style.border = "";
         setTaskTitle(value);
         break;
       case "content":
