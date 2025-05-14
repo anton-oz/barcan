@@ -50,7 +50,6 @@ textarea {
   height: 2em;
   min-height: 2em;
   max-height: 10em;
-  resize: vertical;
 
   font-size: 1.15em;
   overflow: none;

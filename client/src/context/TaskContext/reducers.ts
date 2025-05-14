@@ -1,4 +1,3 @@
-import { Action, State } from "./types";
 import {
   SET_TASKS,
   ADD_TASK,
@@ -6,6 +5,7 @@ import {
   DELETE_TASK,
   SET_ERROR,
 } from "./actions";
+import { Action, State } from "./types";
 
 /**
  * Makes sure at least one key is valid for given type

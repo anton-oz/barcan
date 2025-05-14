@@ -23,7 +23,7 @@ export default function Task({ task, provided, snapshot }: Props) {
 
   useEffect(() => {
     if (document.activeElement instanceof HTMLElement)
-      document.activeElement.blur();
+      document.activeElement?.parentElement?.focus();
   }, [isFocusable]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -113,6 +113,7 @@ export default function Task({ task, provided, snapshot }: Props) {
       }}
       style={{
         outline: snapshot.isDragging ? "solid var(--subtext-1)" : "",
+        background: isFocusable ? "var(--surface-1)" : "",
         ...provided.draggableProps.style,
       }}
       tabIndex={0}
@@ -129,7 +130,11 @@ export default function Task({ task, provided, snapshot }: Props) {
       </div>
       <textarea
         ref={titleRef}
-        // onFocus={() => setIsFocusable(true)}
+        onFocus={function (e) {
+          const title = e.target;
+          title.selectionStart = title.value.length;
+        }}
+        spellCheck={false}
         tabIndex={isFocusable ? 0 : -1}
         className="title"
         role="task title"
@@ -140,7 +145,11 @@ export default function Task({ task, provided, snapshot }: Props) {
         rows={1}
       />
       <textarea
-        // onFocus={() => setIsFocusable(true)}
+        onFocus={function (e) {
+          const title = e.target;
+          title.selectionStart = title.value.length;
+        }}
+        spellCheck={false}
         tabIndex={isFocusable ? 0 : -1}
         className="content"
         role="task content"
