@@ -14,7 +14,7 @@ section {
 }
 
 #error {
-  width: 13%;
+  width: 7%;
   margin: 1em;
   padding: 1em;
   position: absolute;
@@ -24,12 +24,13 @@ section {
   background: var(--surface-0);
 
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 
   border: 2px solid var(--red);
   border-radius: var(--border-radius);
 
+  cursor: default;
   transition: all;
   transition-duration: 200ms;
 }
@@ -37,8 +38,12 @@ section {
 #error > h2 {
   color: var(--red);
 
-  font-size: 3em;
+  font-size: 2.25em;
   font-weight: bold;
+}
+
+#error > p {
+  color: var(--text);
 }
 
 #error > button {

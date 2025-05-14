@@ -70,6 +70,16 @@
   display: none;
 }
 
+*::selection {
+  color: var(--crust);
+  background: var(--lavender);
+}
+
+*::-moz-selection {
+  color: var(--crust);
+  background: var(--lavender);
+}
+
 html {
   height: 100vh;
   max-height: 100vh;

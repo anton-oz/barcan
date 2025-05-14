@@ -10,10 +10,10 @@ export type AtLeastOne<T> = {
 }[keyof T];
 
 interface Payload {
-  task?: Task;
   tasks?: Task[];
   id?: number;
-  update: AtLeastOne<Task>;
+  update?: AtLeastOne<Task>;
+  error?: boolean;
 }
 
 export type ValidPayload = AtLeastOne<Payload>;
@@ -23,10 +23,12 @@ export interface Action {
     | typeof SET_TASKS
     | typeof ADD_TASK
     | typeof UPDATE_TASK
-    | typeof DELETE_TASK;
+    | typeof DELETE_TASK
+    | typeof SET_ERROR;
   payload: ValidPayload;
 }
 
 export interface State {
   tasks: Task[];
+  error: boolean;
 }

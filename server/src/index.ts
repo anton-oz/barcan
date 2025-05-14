@@ -20,7 +20,7 @@ app.use(
 );
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("barcan api root");
+  res.send("barcan");
 });
 
 app.use(routes);

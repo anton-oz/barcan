@@ -4,4 +4,6 @@ nav {
 
   background: var(--base);
   border-bottom: 1px solid var(--surface-2);
+
+  cursor: default;
 }

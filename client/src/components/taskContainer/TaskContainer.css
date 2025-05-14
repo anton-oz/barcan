@@ -16,6 +16,7 @@ header > h2 {
   font-weight: bold;
   font-size: 1.5em;
 
+  cursor: default;
   /* color: var(--lavender); */
   /* background: var(--surface-2); */
   border-radius: var(--border-radius);

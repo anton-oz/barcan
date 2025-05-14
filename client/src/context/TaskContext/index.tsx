@@ -25,6 +25,7 @@ export const useTaskContext = () => {
 export function TaskProvider({ children }: { children: ReactNode }) {
   const initialState: State = {
     tasks: [],
+    error: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -33,10 +34,12 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     const fetchTasks = async () => {
       try {
         const res = await fetch("http://localhost:3000/api/tasks");
-        const data = await res.json();
-        dispatch({ type: "SET_TASKS", payload: { tasks: data } });
+        const tasks = await res.json();
+        dispatch({ type: "SET_TASKS", payload: { tasks } });
+        dispatch({ type: "SET_ERROR", payload: { error: false } });
       } catch (error) {
         console.error("Error: ", error);
+        dispatch({ type: "SET_ERROR", payload: { error: true } });
         return null;
       }
     };

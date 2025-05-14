@@ -1,5 +1,11 @@
 import { Action, State } from "./types";
-import { SET_TASKS, ADD_TASK, UPDATE_TASK, DELETE_TASK } from "./actions";
+import {
+  SET_TASKS,
+  ADD_TASK,
+  UPDATE_TASK,
+  DELETE_TASK,
+  SET_ERROR,
+} from "./actions";
 
 /**
  * Makes sure at least one key is valid for given type
@@ -59,6 +65,13 @@ export default function reducer(state: State, action: Action): State {
         (task) => task.id !== taskId,
       );
       return { ...state, tasks: updatedTasks };
+    }
+
+    case SET_ERROR: {
+      const { error } = action.payload;
+      if (error === undefined) throw new Error("SET_ERROR: error is undefined");
+
+      return { ...state, error };
     }
 
     default:

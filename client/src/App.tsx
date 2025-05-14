@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTaskContext } from "./context/TaskContext";
 import Nav from "./components/nav/Nav";
 import TaskContainer from "./components/taskContainer/TaskContainer";
@@ -9,9 +8,7 @@ import { Task, AtLeastOne } from "./context/TaskContext/types";
 
 function App() {
   const { state, dispatch } = useTaskContext();
-  const { tasks } = state;
-
-  const [error, setError] = useState(false);
+  const { tasks, error } = state;
 
   const handleUpdate = async (id: number, body: AtLeastOne<Task>) => {
     if (!body) throw new Error("body is undefined");
@@ -29,7 +26,6 @@ function App() {
       }
     } catch (error) {
       console.error("Could not update: ", error);
-      setError(true);
     }
   };
 
@@ -53,12 +49,12 @@ function App() {
   return (
     <>
       <Nav />
-      {/* {error ? ( */}
-      <div id="error" style={{ opacity: error ? "100" : "0" }}>
-        <h2>Error</h2>
-        {/* <button onClick={handleRetry}>Retry</button> */}
-      </div>
-      {/* ) : null} */}
+      {error ? (
+        <div id="error" style={{ opacity: error ? "100" : "0" }}>
+          <h2>Error</h2>
+          {/* <button onClick={handleRetry}>Retry</button> */}
+        </div>
+      ) : null}
       <main>
         <DragDropContext onDragEnd={handleDragEnd}>
           <TaskContainer
