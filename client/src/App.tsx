@@ -10,7 +10,7 @@ function App() {
   const { state, dispatch } = useTaskContext();
   const { tasks, error } = state;
 
-  const handleUpdate = async (id: number, body: AtLeastOne<Task>) => {
+  const handlePost = async (id: number, body: AtLeastOne<Task>) => {
     if (!body) throw new Error("body is undefined");
     const options: RequestInit = {
       method: "POST",
@@ -43,7 +43,7 @@ function App() {
         tasks,
       },
     });
-    handleUpdate(taskId, { status });
+    handlePost(taskId, { status });
   };
 
   return (

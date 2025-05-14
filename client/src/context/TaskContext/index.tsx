@@ -2,17 +2,11 @@ import {
   useEffect,
   createContext,
   useContext,
-  Dispatch,
   ReactNode,
   useReducer,
 } from "react";
-import { Action, State } from "./types";
+import { State, TaskContextType } from "./types";
 import reducer from "./reducers";
-
-interface TaskContextType {
-  state: State;
-  dispatch: Dispatch<Action>;
-}
 
 export const TaskContext = createContext<TaskContextType | null>(null);
 
@@ -22,7 +16,7 @@ export const useTaskContext = () => {
   return context;
 };
 
-export function TaskProvider({ children }: { children: ReactNode }) {
+export default function TaskProvider({ children }: { children: ReactNode }) {
   const initialState: State = {
     tasks: [],
     error: false,

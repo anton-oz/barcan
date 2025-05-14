@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { X } from "lucide-react";
 import { useTaskContext } from "@/context/TaskContext";
-import { Task as TaskProps } from "@/context/TaskContext/types";
+import { Task as TaskType } from "@/context/TaskContext/types";
 import "./Task.css";
 
 interface Props {
-  task: TaskProps;
+  task: TaskType;
   provided: DraggableProvided;
   snapshot: DraggableStateSnapshot;
 }
@@ -20,11 +20,6 @@ export default function Task({ task, provided, snapshot }: Props) {
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
   const [isFocusable, setIsFocusable] = useState(false);
-
-  useEffect(() => {
-    if (document.activeElement instanceof HTMLElement)
-      document.activeElement?.parentElement?.focus();
-  }, [isFocusable]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { target } = event;
@@ -87,6 +82,9 @@ export default function Task({ task, provided, snapshot }: Props) {
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
+    if (document.activeElement instanceof HTMLElement)
+      document.activeElement?.parentElement?.focus();
+
     const title = titleRef.current;
     if (title) {
       if (isFocusable) {
@@ -117,16 +115,10 @@ export default function Task({ task, provided, snapshot }: Props) {
         ...provided.draggableProps.style,
       }}
       tabIndex={0}
-      data-status={status}
-      // draggable
       className="task"
     >
       <div style={{ position: "relative", height: "0", width: "100%" }}>
-        <X
-          className="deleteBtn"
-          onClick={handleDelete}
-          data-parent={id.toString()}
-        />
+        <X className="deleteBtn" onClick={handleDelete} />
       </div>
       <textarea
         ref={titleRef}

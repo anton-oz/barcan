@@ -40,3 +40,8 @@ export interface State {
   tasks: Task[];
   error: boolean;
 }
+
+export interface TaskContextType {
+  state: State;
+  dispatch: Dispatch<Action>;
+}
