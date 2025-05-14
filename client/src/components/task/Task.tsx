@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { X } from "lucide-react";
-import { useTaskContext } from "../../context/TaskContext";
-import { Task as TaskProps } from "../../context/TaskContext/types";
+import { useTaskContext } from "@/context/TaskContext";
+import { Task as TaskProps } from "@/context/TaskContext/types";
 import "./Task.css";
 
 interface Props {

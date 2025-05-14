@@ -1,10 +1,10 @@
-import { useTaskContext } from "./context/TaskContext";
-import Nav from "./components/nav/Nav";
-import TaskContainer from "./components/taskContainer/TaskContainer";
-import "./App.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { UPDATE_TASK } from "./context/TaskContext/actions";
-import { Task, AtLeastOne } from "./context/TaskContext/types";
+import { useTaskContext } from "@/context/TaskContext";
+import Nav from "@/components/nav/Nav";
+import TaskContainer from "@/components/taskContainer/TaskContainer";
+import { UPDATE_TASK } from "@/context/TaskContext/actions";
+import { Task, AtLeastOne } from "@/context/TaskContext/types";
+import "./App.css";
 
 function App() {
   const { state, dispatch } = useTaskContext();

@@ -1,8 +1,8 @@
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { Plus } from "lucide-react";
-import Task from "../task/Task";
-import { useTaskContext } from "../../context/TaskContext";
-import { Task as TaskData } from "../../context/TaskContext/types";
+import Task from "@/components/task/Task";
+import { useTaskContext } from "@/context/TaskContext";
+import { Task as TaskData } from "@/context/TaskContext/types";
 import "./TaskContainer.css";
 
 interface TaskContainerProps {
