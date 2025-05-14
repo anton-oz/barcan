@@ -6,14 +6,8 @@ import {
   ReactNode,
   useReducer,
 } from "react";
-import reducer, { Action, State } from "./reducers";
-
-export interface Task {
-  id: number;
-  title: string;
-  content: string;
-  status: string;
-}
+import { Action, State } from "./types";
+import reducer from "./reducers";
 
 interface TaskContextType {
   state: State;

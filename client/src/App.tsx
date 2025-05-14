@@ -5,8 +5,7 @@ import TaskContainer from "./components/taskContainer/TaskContainer";
 import "./App.css";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { UPDATE_TASK } from "./context/TaskContext/actions";
-import { AtLeastOne } from "./context/TaskContext/reducers";
-import { Task } from "./context/TaskContext";
+import { Task, AtLeastOne } from "./context/TaskContext/types";
 
 function App() {
   const { state, dispatch } = useTaskContext();

@@ -1,10 +1,9 @@
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { Plus } from "lucide-react";
 import Task from "../task/Task";
-import "./TaskContainer.css";
 import { useTaskContext } from "../../context/TaskContext";
-import { Task as TaskData } from "../../context/TaskContext";
-
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { Task as TaskData } from "../../context/TaskContext/types";
+import "./TaskContainer.css";
 
 interface TaskContainerProps {
   heading: "Todo" | "In Progress" | "Done";

@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { DraggableProvided } from "@hello-pangea/dnd";
-import { Task as TaskProps, useTaskContext } from "../../context/TaskContext";
-import "./Task.css";
 import { X } from "lucide-react";
+import { useTaskContext } from "../../context/TaskContext";
+import { Task as TaskProps } from "../../context/TaskContext/types";
+import "./Task.css";
 
 interface Props {
   task: TaskProps;
@@ -12,7 +13,9 @@ interface Props {
 export default function Task({ task, provided }: Props) {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
+
   const { id, title, content, status } = task;
+
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
   const [isFocusable, setIsFocusable] = useState(false);
