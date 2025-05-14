@@ -29,11 +29,13 @@ textarea {
 }
 
 .title {
+  width: fit-content;
+  margin-bottom: 0.5em;
+  padding: 0.25em;
+
   color: var(--rosewater);
 
-  margin-bottom: 0.5em;
-
-  font-size: 1.25em;
+  font-size: 1.45em;
   font-weight: bold;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -50,6 +52,7 @@ textarea {
   max-height: 10em;
   resize: vertical;
 
+  font-size: 1.15em;
   overflow: none;
 }
 

@@ -53,6 +53,10 @@ export default function Task({ task, provided, snapshot }: Props) {
     const options: RequestInit = {
       method: "DELETE",
     };
+    if (id === 0) {
+      dispatch({ type: "SET_ERROR", payload: { error: true } });
+      return;
+    }
     try {
       const res = await fetch(`http://localhost:3000/api/tasks/${id}`, options);
       if (!res.ok) {
