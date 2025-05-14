@@ -79,7 +79,9 @@ export default function TaskContainer({
                 draggableId={`task-${task.id}`}
                 index={i}
               >
-                {(provided) => <Task task={task} provided={provided} />}
+                {(provided, snapshot) => (
+                  <Task task={task} provided={provided} snapshot={snapshot} />
+                )}
               </Draggable>
             ))}
             {provided.placeholder}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { DraggableProvided } from "@hello-pangea/dnd";
+import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { X } from "lucide-react";
 import { useTaskContext } from "../../context/TaskContext";
 import { Task as TaskProps } from "../../context/TaskContext/types";
@@ -8,9 +8,10 @@ import "./Task.css";
 interface Props {
   task: TaskProps;
   provided: DraggableProvided;
+  snapshot: DraggableStateSnapshot;
 }
 
-export default function Task({ task, provided }: Props) {
+export default function Task({ task, provided, snapshot }: Props) {
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
@@ -57,8 +58,10 @@ export default function Task({ task, provided }: Props) {
       if (!res.ok) {
         throw new Error("bad delete request");
       }
+      dispatch({ type: "SET_ERROR", payload: { error: false } });
     } catch (error) {
       console.error("could not delete: ", error);
+      dispatch({ type: "SET_ERROR", payload: { error: true } });
     }
   };
 
@@ -105,7 +108,7 @@ export default function Task({ task, provided }: Props) {
         }
       }}
       style={{
-        outline: isFocusable ? "solid var(--blue)" : "",
+        outline: snapshot.isDragging ? "solid var(--subtext-1)" : "",
         ...provided.draggableProps.style,
       }}
       tabIndex={0}
