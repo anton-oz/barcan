@@ -23,6 +23,11 @@ Task.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
   },
   {
     sequelize,

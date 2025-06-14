@@ -5,6 +5,7 @@ import TaskContainer from "@/components/taskContainer/TaskContainer";
 import { UPDATE_TASK } from "@/context/TaskContext/actions";
 import { Task, AtLeastOne } from "@/context/TaskContext/types";
 import "./App.css";
+import { useEffect } from "react";
 
 function App() {
   const { state, dispatch } = useTaskContext();
@@ -46,13 +47,17 @@ function App() {
     handlePost(taskId, { status });
   };
 
+  useEffect(() => {
+    console.log("tasks ", tasks);
+  }, [tasks]);
+
   return (
     <>
       <Nav />
       {error ? (
         <div id="error" style={{ opacity: error ? "100" : "0" }}>
           <h2>Error</h2>
-          {/* <button onClick={handleRetry}>Retry</button> */}
+          <p>check console for error info</p>
         </div>
       ) : null}
       <main>
