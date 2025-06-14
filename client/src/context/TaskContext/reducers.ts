@@ -52,6 +52,7 @@ export default function reducer(state: State, action: Action): State {
       // BUG: but this is a bug
       if (!taskId && taskId === 0) {
         console.log("woah there, the id is 0 somehow someway");
+        console.log(action.payload);
       } else if (!taskId) {
         console.log(taskId);
         console.log(action.payload);

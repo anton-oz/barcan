@@ -73,9 +73,15 @@ export default function Task({ task, provided, snapshot }: Props) {
   const handleDelete = (e: React.MouseEvent<SVGElement>) => {
     const deleteBtn = e.target as HTMLElement;
     if (!deleteBtn.parentElement?.parentElement) throw new Error("im batman");
-    const task = deleteBtn.parentElement.parentElement;
+    let task = deleteBtn.parentElement.parentElement;
+    if (task.nodeName === "DIV") {
+      if (task.parentElement === null)
+        throw new Error("task parent el is null");
+      task = task.parentElement;
+    }
     const taskId = +task.id;
 
+    console.log(task);
     dispatch({ type: "DELETE_TASK", payload: { id: taskId, tasks } });
 
     handleDeleteReq(taskId);
@@ -123,7 +129,7 @@ export default function Task({ task, provided, snapshot }: Props) {
       tabIndex={0}
       className="task"
     >
-      <div style={{ position: "relative", height: "0", width: "100%" }}>
+      <div style={{ position: "relative", height: "1", width: "100%" }}>
         <X className="deleteBtn" onClick={handleDelete} />
       </div>
       <textarea
