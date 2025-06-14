@@ -50,67 +50,67 @@ const otherSample = [
   {
     title: "Task 8",
     content: "Train team on new software tool.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 9",
     content: "Organize product launch event.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 10",
     content: "Create marketing materials for upcoming campaign.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 11",
     content: "Analyze market trends for future direction.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 12",
     content: "Secure additional funding from investors.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 13",
     content: "Launch social media advertising campaigns.",
-    status: "Todo",
+    status: "In Progress",
   },
   {
     title: "Task 14",
     content: "Introduce company-wide training program.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 15",
     content: "Develop prototype for new product line.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 16",
     content: "Leverage customer feedback for improvement.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 17",
     content: "Conduct employee satisfaction survey.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 18",
     content: "Refactor legacy codebase for efficiency.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 19",
     content: "Optimize web application performance.",
-    status: "Todo",
+    status: "Done",
   },
   {
     title: "Task 20",
     content: "Collaborate with international partners on overseas projects.",
-    status: "Todo",
+    status: "Done",
   },
 ];
 const seedDB = async () => {
