@@ -72,7 +72,8 @@ export default function Task({ task, provided, snapshot }: Props) {
 
   const handleDelete = (e: React.MouseEvent<SVGElement>) => {
     const deleteBtn = e.target as HTMLElement;
-    if (!deleteBtn.parentElement?.parentElement) throw new Error("im batman");
+    if (!deleteBtn.parentElement?.parentElement)
+      throw new Error("deleteBtn.parentElement.parentElement is null");
     let task = deleteBtn.parentElement.parentElement;
     if (task.nodeName === "DIV") {
       if (task.parentElement === null)

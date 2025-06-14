@@ -22,6 +22,22 @@ export default function TaskContainer({
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
+  const addTaskToDb = async (task: TaskData) => {
+    const url = "http://localhost:3000/api/tasks";
+    const options: RequestInit = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(task),
+    };
+    try {
+      const res = await fetch(url, options);
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error(`Error: ${error}`);
+    }
+  };
+
   const addTask = async () => {
     const newTask = {
       id: tasks.length + 1,
@@ -29,6 +45,7 @@ export default function TaskContainer({
       content: "",
       status: "Todo",
     };
+    await addTaskToDb(newTask);
     dispatch({ type: "ADD_TASK", payload: { tasks: [newTask, ...tasks] } });
   };
 
