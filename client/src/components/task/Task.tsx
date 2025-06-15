@@ -82,7 +82,6 @@ export default function Task({ task, provided, snapshot }: Props) {
     }
     const taskId = +task.id;
 
-    console.log(task);
     dispatch({ type: "DELETE_TASK", payload: { id: taskId, tasks } });
 
     handleDeleteReq(taskId);

@@ -32,9 +32,8 @@ export default function TaskProvider({ children }: { children: ReactNode }) {
         dispatch({ type: "SET_TASKS", payload: { tasks } });
         dispatch({ type: "SET_ERROR", payload: { error: false } });
       } catch (error) {
-        console.error("Error: ", error);
+        console.error("Error in context index: ", error);
         dispatch({ type: "SET_ERROR", payload: { error: true } });
-        return null;
       }
     };
 
