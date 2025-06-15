@@ -5,7 +5,6 @@ import TaskContainer from "@/components/taskContainer/TaskContainer";
 import { UPDATE_TASK } from "@/context/TaskContext/actions";
 import { Task, AtLeastOne } from "@/context/TaskContext/types";
 import "./App.css";
-import { useEffect } from "react";
 
 function App() {
   const { state, dispatch } = useTaskContext();
@@ -36,6 +35,8 @@ function App() {
     const taskId = +result.draggableId.slice(5);
     const status = result.destination.droppableId;
 
+    console.log("result ", result);
+
     dispatch({
       type: UPDATE_TASK,
       payload: {
@@ -47,17 +48,13 @@ function App() {
     handlePost(taskId, { status });
   };
 
-  useEffect(() => {
-    console.log("tasks ", tasks);
-  }, [tasks]);
-
   return (
     <>
       <Nav />
       {error ? (
         <div id="error" style={{ opacity: error ? "100" : "0" }}>
           <h2>Error</h2>
-          <p>check console for error info</p>
+          <p>check console</p>
         </div>
       ) : null}
       <main>
@@ -65,19 +62,31 @@ function App() {
           <TaskContainer
             heading="Todo"
             filteredTasks={
-              tasks ? tasks.filter((task) => task.status === "Todo") : []
+              tasks
+                ? tasks
+                    .filter((task) => task.status === "Todo")
+                    .sort((a, b) => a.order - b.order)
+                : []
             }
           />
           <TaskContainer
             heading="In Progress"
             filteredTasks={
-              tasks ? tasks.filter((task) => task.status === "In Progress") : []
+              tasks
+                ? tasks
+                    .filter((task) => task.status === "In Progress")
+                    .sort((a, b) => a.order - b.order)
+                : []
             }
           />
           <TaskContainer
             heading="Done"
             filteredTasks={
-              tasks ? tasks.filter((task) => task.status === "Done") : []
+              tasks
+                ? tasks
+                    .filter((task) => task.status === "Done")
+                    .sort((a, b) => a.order - b.order)
+                : []
             }
           />
         </DragDropContext>

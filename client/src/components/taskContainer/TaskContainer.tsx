@@ -4,7 +4,6 @@ import Task from "@/components/task/Task";
 import { useTaskContext } from "@/context/TaskContext";
 import { Task as TaskData } from "@/context/TaskContext/types";
 import "./TaskContainer.css";
-import { useEffect } from "react";
 
 interface TaskContainerProps {
   heading: "Todo" | "In Progress" | "Done";
@@ -45,6 +44,7 @@ export default function TaskContainer({
       title: "",
       content: "",
       status: "Todo",
+      order: 0,
     };
     await addTaskToDb(newTask);
     dispatch({ type: "ADD_TASK", payload: { tasks: [newTask, ...tasks] } });
@@ -56,10 +56,6 @@ export default function TaskContainer({
       addTask();
     }
   };
-
-  useEffect(() => {
-    console.log(`filteredTasks for ${heading} `, filteredTasks);
-  }, [filteredTasks]);
 
   return (
     <section>

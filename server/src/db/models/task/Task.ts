@@ -26,7 +26,8 @@ Task.init(
     order: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
+      // HACK: this could be problematic
+      // unique: true,
     },
   },
   {
