@@ -24,6 +24,7 @@ section {
   background: var(--red);
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -42,7 +43,17 @@ section {
 }
 
 #error > p {
+  width: max-content;
+
+  margin-top: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+
+  text-align: center;
+  font-weight: bold;
+
   color: var(--text);
+  background-color: black;
 }
 
 #error > button {
