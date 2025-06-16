@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { Task } from "../../db/models";
-import { where } from "sequelize";
+import sequelize from "../../db/connection";
 
 const taskRoutes = Router();
 
@@ -14,10 +14,35 @@ taskRoutes.post("/", async (req: Request, res: Response) => {
   res.json(task);
 });
 
+taskRoutes.put("/", async (req: Request, res: Response) => {
+  const tasks = req.body;
+
+  if (!Array.isArray(tasks)) {
+    res.status(400).json({ error: "Invalid task array" });
+    return;
+  }
+
+  const transaction = await sequelize.transaction();
+
+  try {
+    // Delete all current tasks
+    await Task.destroy({ where: {}, transaction });
+
+    // Insert new ones
+    const created = await Task.bulkCreate(tasks, { transaction });
+
+    await transaction.commit();
+    res.json(created);
+  } catch (error) {
+    await transaction.rollback();
+    res.status(500).json({ error: "Update failed", details: error });
+  }
+});
+
 taskRoutes.post("/:id", async (req: Request, res: Response) => {
   const id = req.params.id;
-  const status = req.body.status;
-  const task = await Task.update({ status }, { where: { id } });
+  const data = req.body;
+  const task = await Task.update({ ...data }, { where: { id } });
   res.json(task);
 });
 

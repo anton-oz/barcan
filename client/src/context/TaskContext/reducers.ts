@@ -2,6 +2,7 @@ import {
   SET_TASKS,
   ADD_TASK,
   UPDATE_TASK,
+  UPDATE_TASKS,
   DELETE_TASK,
   SET_ERROR,
 } from "./actions";
@@ -31,18 +32,25 @@ export default function reducer(state: State, action: Action): State {
       const updateOpts = { ...action.payload.update };
       if (!updateOpts) throw new Error("Update opts is empty");
 
-      if (!action.payload.id) throw new Error("id required for update");
+      const { tasks, id } = action.payload;
 
-      if (!action.payload.tasks) throw new Error("tasks is undefined");
-      if (!Array.isArray(action.payload.tasks))
+      if (!id) throw new Error("id required for update");
+
+      if (!tasks) throw new Error("tasks is undefined");
+      if (!Array.isArray(tasks))
         throw new Error("UPDATE_TASK: Incorrect payload type");
 
-      const updatedTasks = action.payload.tasks.map((task) =>
-        task.id === action.payload?.id
-          ? { ...task, ...action.payload?.update }
-          : task,
+      const updatedTasks = tasks.map((task) =>
+        task.id === id ? { ...task, updateOpts } : task,
       );
+
       return { ...state, tasks: updatedTasks };
+    }
+
+    case UPDATE_TASKS: {
+      const { tasks } = action.payload;
+      if (!tasks) throw new Error("UPDATE_TASKS: tasks is null");
+      return { ...state, tasks };
     }
 
     case DELETE_TASK: {

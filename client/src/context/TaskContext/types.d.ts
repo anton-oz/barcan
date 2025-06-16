@@ -2,6 +2,7 @@ import {
   SET_TASKS,
   ADD_TASK,
   UPDATE_TASK,
+  UPDATE_TASKS,
   DELETE_TASK,
   SET_ERROR,
 } from "./actions";
@@ -32,6 +33,7 @@ export interface Action {
     | typeof SET_TASKS
     | typeof ADD_TASK
     | typeof UPDATE_TASK
+    | typeof UPDATE_TASKS
     | typeof DELETE_TASK
     | typeof SET_ERROR;
   payload: ValidPayload;
