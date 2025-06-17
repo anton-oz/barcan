@@ -44,6 +44,7 @@ export default function TaskContainer({
     otherTasks.push(...updated);
 
     dispatch({ type: UPDATE_TASKS, payload: { tasks: otherTasks } });
+    console.log("new tasks", tasks);
     handlePut(otherTasks);
   };
 

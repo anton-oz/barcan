@@ -14,6 +14,13 @@ taskRoutes.post("/", async (req: Request, res: Response) => {
   res.json(task);
 });
 
+/**
+ * HACK:
+ * this put is fucked
+ * need to find a better way to only update order numbers
+ * that have changed.
+ */
+
 taskRoutes.put("/", async (req: Request, res: Response) => {
   const tasks = req.body;
 

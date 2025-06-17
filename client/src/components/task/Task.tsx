@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { useTaskContext } from "@/context/TaskContext";
 import { Task as TaskType } from "@/context/TaskContext/types";
 import "./Task.css";
+import { handlePost } from "@/lib";
 
 interface Props {
   task: TaskType;
@@ -109,6 +110,11 @@ export default function Task({ task, provided, snapshot }: Props) {
     }
   }, [isFocusable]);
 
+  const handleUpdateOnBlur = () => {
+    if (taskTitle === task.title && taskContent === task.content) return;
+    handlePost({ ...task, title: taskTitle, content: taskContent });
+  };
+
   return (
     <li
       ref={provided.innerRef}
@@ -134,10 +140,11 @@ export default function Task({ task, provided, snapshot }: Props) {
       </div>
       <textarea
         ref={titleRef}
-        onFocus={function (e) {
+        onFocus={(e) => {
           const title = e.target;
           title.selectionStart = title.value.length;
         }}
+        onBlur={handleUpdateOnBlur}
         spellCheck={false}
         tabIndex={isFocusable ? 0 : -1}
         className="title"
@@ -153,6 +160,7 @@ export default function Task({ task, provided, snapshot }: Props) {
           const title = e.target;
           title.selectionStart = title.value.length;
         }}
+        onBlur={handleUpdateOnBlur}
         spellCheck={false}
         tabIndex={isFocusable ? 0 : -1}
         className="content"
