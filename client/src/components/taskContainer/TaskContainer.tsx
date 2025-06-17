@@ -4,6 +4,8 @@ import Task from "@/components/task/Task";
 import { useTaskContext } from "@/context/TaskContext";
 import { Task as TaskData } from "@/context/TaskContext/types";
 import "./TaskContainer.css";
+import { UPDATE_TASKS } from "@/context/TaskContext/actions";
+import { handlePut } from "@/lib";
 
 interface TaskContainerProps {
   heading: "Todo" | "In Progress" | "Done";
@@ -22,32 +24,27 @@ export default function TaskContainer({
   const { state, dispatch } = useTaskContext();
   const { tasks } = state;
 
-  const addTaskToDb = async (task: TaskData) => {
-    const url = "http://localhost:3000/api/tasks";
-    const options: RequestInit = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(task),
-    };
-    try {
-      const res = await fetch(url, options);
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error(`Error: ${error}`);
-    }
-  };
-
   const addTask = async () => {
+    const nextId = tasks.sort((a, b) => a.id - b.id)[tasks.length - 1].id + 1;
+
     const newTask = {
-      id: tasks.length + 1,
+      id: nextId,
       title: "",
       content: "",
       status: "Todo",
       order: 0,
     };
-    await addTaskToDb(newTask);
-    dispatch({ type: "ADD_TASK", payload: { tasks: [newTask, ...tasks] } });
+    const todoTasks = tasks.filter((task) => task.status === "Todo");
+    const otherTasks = tasks.filter((task) => task.status !== "Todo");
+    todoTasks.unshift(newTask);
+    const updated = todoTasks.map((task) => ({
+      ...task,
+      order: task.order + 1,
+    }));
+    otherTasks.push(...updated);
+
+    dispatch({ type: UPDATE_TASKS, payload: { tasks: otherTasks } });
+    handlePut(otherTasks);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<SVGElement>) => {

@@ -35,6 +35,7 @@ taskRoutes.put("/", async (req: Request, res: Response) => {
     res.json(created);
   } catch (error) {
     await transaction.rollback();
+    console.error("ERROR:", error);
     res.status(500).json({ error: "Update failed", details: error });
   }
 });

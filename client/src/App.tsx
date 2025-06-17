@@ -4,27 +4,28 @@ import Nav from "@/components/nav/Nav";
 import TaskContainer from "@/components/taskContainer/TaskContainer";
 import { UPDATE_TASKS } from "@/context/TaskContext/actions";
 import { Task } from "@/context/TaskContext/types";
+import { handlePut } from "./lib";
 import "./App.css";
 
 function App() {
   const { state, dispatch } = useTaskContext();
   const { tasks, error } = state;
 
-  const handlePut = async (newTasks: Task[]) => {
-    const url = "http://localhost:3000/api/tasks";
-    const opts: RequestInit = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newTasks),
-    };
-    try {
-      const res = await fetch(url, opts);
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.error(`ERROR: handlePut error ${error}`);
-    }
-  };
+  // const handlePut = async (newTasks: Task[]) => {
+  //   const url = "http://localhost:3000/api/tasks";
+  //   const opts: RequestInit = {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(newTasks),
+  //   };
+  //   try {
+  //     const res = await fetch(url, opts);
+  //     const data = await res.json();
+  //     return data;
+  //   } catch (error) {
+  //     console.error(`ERROR: handlePut error ${error}`);
+  //   }
+  // };
 
   function moveItem(array: Task[], fromIndex: number, toIndex: number) {
     if (toIndex > array.length - 1) return array;
@@ -68,7 +69,7 @@ function App() {
     const newTasks = tasks.filter((task) => task.status !== status);
     newTasks.push(...reordered);
 
-    // wtf
+    // HACK: wtf
     const finalTasks = newTasks.map((item) =>
       item.id === taskId ? { ...item, status, order: destinationIndex } : item,
     );
