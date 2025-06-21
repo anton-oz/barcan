@@ -41,8 +41,9 @@ export default function reducer(state: State, action: Action): State {
         throw new Error("UPDATE_TASK: Incorrect payload type");
 
       const updatedTasks = tasks.map((task) =>
-        task.id === id ? { ...task, updateOpts } : task,
+        task.id === id ? { ...task, ...updateOpts } : task,
       );
+      console.log("updatedTasks: ", updatedTasks);
 
       return { ...state, tasks: updatedTasks };
     }

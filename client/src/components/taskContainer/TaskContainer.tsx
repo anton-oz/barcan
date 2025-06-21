@@ -25,7 +25,12 @@ export default function TaskContainer({
   const { tasks } = state;
 
   const addTask = async () => {
-    const nextId = tasks.sort((a, b) => a.id - b.id)[tasks.length - 1].id + 1;
+    let nextId: number;
+    if (tasks.length === 0) {
+      nextId = 1;
+    } else {
+      nextId = tasks.sort((a, b) => a.id - b.id)[tasks.length - 1].id + 1;
+    }
 
     const newTask = {
       id: nextId,
@@ -44,7 +49,6 @@ export default function TaskContainer({
     otherTasks.push(...updated);
 
     dispatch({ type: UPDATE_TASKS, payload: { tasks: otherTasks } });
-    console.log("new tasks", tasks);
     handlePut(otherTasks);
   };
 

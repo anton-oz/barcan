@@ -62,7 +62,7 @@ export const addTaskToDb = async (task: Task) => {
 };
 
 export const handlePost = async (task: Task) => {
-  const res = handleFetch(`/tasks/${task.id}`, "POST", task);
+  const res = await handleFetch(`/tasks/${task.id}`, "POST", task);
   if (!res) throw new Error("ruh roh");
   return res;
 };

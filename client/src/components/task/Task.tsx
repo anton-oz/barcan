@@ -5,6 +5,7 @@ import { useTaskContext } from "@/context/TaskContext";
 import { Task as TaskType } from "@/context/TaskContext/types";
 import "./Task.css";
 import { handlePost } from "@/lib";
+import { UPDATE_TASK, UPDATE_TASKS } from "@/context/TaskContext/actions";
 
 interface Props {
   task: TaskType;
@@ -20,6 +21,8 @@ export default function Task({ task, provided, snapshot }: Props) {
 
   const [taskTitle, setTaskTitle] = useState(title);
   const [taskContent, setTaskContent] = useState(content);
+  // TODO: change to em
+  const [taskContentHeight, setTaskContentHeight] = useState(0);
   const [isFocusable, setIsFocusable] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -76,6 +79,8 @@ export default function Task({ task, provided, snapshot }: Props) {
     if (!deleteBtn.parentElement?.parentElement)
       throw new Error("deleteBtn.parentElement.parentElement is null");
     let task = deleteBtn.parentElement.parentElement;
+    // HACK: this is to ensre that the li element is selected, because the li
+    // is the el with the id attached to it
     if (task.nodeName === "DIV") {
       if (task.parentElement === null)
         throw new Error("task parent el is null");
@@ -88,9 +93,32 @@ export default function Task({ task, provided, snapshot }: Props) {
     handleDeleteReq(taskId);
   };
 
-  const autoResizeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.target.style.height = Math.min(e.target.scrollHeight, 130) + "px";
+  const handleUpdateOnBlur = () => {
+    if (taskTitle === task.title && taskContent === task.content) return;
+    handlePost({ ...task, title: taskTitle, content: taskContent });
+    dispatch({
+      type: UPDATE_TASK,
+      payload: {
+        id,
+        tasks,
+        update: { title: taskTitle, content: taskContent },
+      },
+    });
   };
+
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  const autoResizeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTaskContentHeight(e.target.scrollHeight);
+    e.target.style.height = taskContentHeight + "px";
+  };
+
+  // on component rerender, recaculate height to fit content
+  useEffect(() => {
+    const contentEl = contentRef.current;
+    if (!contentEl) throw new Error("content ref is not defined");
+    setTaskContentHeight(contentEl.scrollHeight);
+  }, []);
 
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
@@ -109,11 +137,6 @@ export default function Task({ task, provided, snapshot }: Props) {
       title.blur();
     }
   }, [isFocusable]);
-
-  const handleUpdateOnBlur = () => {
-    if (taskTitle === task.title && taskContent === task.content) return;
-    handlePost({ ...task, title: taskTitle, content: taskContent });
-  };
 
   return (
     <li
@@ -135,7 +158,7 @@ export default function Task({ task, provided, snapshot }: Props) {
       tabIndex={0}
       className="task"
     >
-      <div style={{ position: "relative", height: "1", width: "100%" }}>
+      <div style={{ position: "relative", width: "100%" }}>
         <X className="deleteBtn" onClick={handleDelete} />
       </div>
       <textarea
@@ -156,6 +179,8 @@ export default function Task({ task, provided, snapshot }: Props) {
         rows={1}
       />
       <textarea
+        style={{ height: taskContentHeight }}
+        ref={contentRef}
         onFocus={function (e) {
           const title = e.target;
           title.selectionStart = title.value.length;
